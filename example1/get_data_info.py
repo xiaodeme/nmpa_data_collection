@@ -61,13 +61,7 @@ def start(threadCount):
     print "所有线程全部结束!"
 
 
-
-
-
 def get_data_info(thread_name):
-
-
-
     while not id_list.empty():
         try:
             data_id = id_list.get()

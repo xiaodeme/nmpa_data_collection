@@ -2,6 +2,14 @@
 import os
 import  Queue
 import json
+import logging
+
+def logConfig(log_name):
+    # output format: output time - logging level - log messages
+    logging.basicConfig(filename=log_name, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+
+
+
 '''
 fn：写入文件
 file_name:文件全路径
@@ -47,6 +55,23 @@ def get_file_list(file_dir):
         for file in files:
             L.append(os.path.join(root, file))
     return L
+
+
+
+'''
+获取当前数据采集最大页码数
+'''
+def get_curr_max_pageno(file_dir):
+    L=[]
+    for root, dirs, files in os.walk(file_dir):
+        for file in files:
+            L.append(file[0:file.index(".")])
+
+    if len(L) == 0:
+        return 0
+    else:
+        max_pageno = max(L)
+        return int(max_pageno)
 
 
 if __name__ == "__main__":
