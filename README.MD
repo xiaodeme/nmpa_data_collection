@@ -7,8 +7,8 @@ html = urllib2.urlopen(url).read()
 print html
 ```
 #### 数据采集地址：
-data_list_url = http://appcfda.drugwebcn.com/datasearch/QueryList?tableId={0}&pageIndex={1}&pageSize={2}
-data_info_url = http://appcfda.drugwebcn.com/datasearch/QueryRecord?searchF=ID&tableId={0}&searchK={1}
+- data_list_url = http://appcfda.drugwebcn.com/datasearch/QueryList?tableId={0}&pageIndex={1}&pageSize={2}
+- data_info_url = http://appcfda.drugwebcn.com/datasearch/QueryRecord?searchF=ID&tableId={0}&searchK={1}
 
 #### 程序说明
 example1:
