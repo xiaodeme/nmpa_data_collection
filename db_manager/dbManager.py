@@ -4,7 +4,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 db =  pymysql.connect(
-        host='127.0.0.1',
+        host='192.168.110.231',
         port=3306,
         user='RA',
         passwd='12345qwert',

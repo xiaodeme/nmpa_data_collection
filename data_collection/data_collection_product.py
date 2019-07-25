@@ -114,7 +114,7 @@ class myThread(threading.Thread):  # 继承父类threading.Thread
 if __name__ == "__main__":
     get_type = 1  # 该参数暂时未生效
     data_type = 26
-    root_path = 'E:/data/data_source/'
+    root_path = '/home/wlin/data/data_source/'
 
     # 日志初始化配置
     LOG_NAME = "data_collection.log"

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #运行程序基础参数
     get_type = 1   #该参数暂时未生效
     data_type = 26
-    root_path = 'E:/data/data_source/'
+    root_path = '~/data/data_source/'
 
     # 第一步：初始化程序运行配置基础信息
     config.init_config(root_path, data_type,get_type)
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     config_dict = config.get_config(root_path,data_type)
 
     # 第三步：运行数据采集程序
-    # data_collection.data_collection(config_dict)
+    data_collection.data_collection(config_dict)
 
     #第四步：数据处理
     data_process.data_process(config_dict)

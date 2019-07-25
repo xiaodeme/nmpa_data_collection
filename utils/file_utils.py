@@ -30,7 +30,6 @@ def mkdir_path(foder_path):
         print("文件夹创建成功：%s" %(foder_path))
     else:
         print("文件夹：%s 已经存在，不会再创建!" % (foder_path))
-    return True
 
 
 '''

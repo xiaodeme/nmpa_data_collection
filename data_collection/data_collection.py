@@ -8,6 +8,7 @@ from utils import file_utils
 from utils import config
 from utils import comm_utils
 from utils import log_utils
+from utils import file_utils
 import logging
 import time
 import  ConfigParser
@@ -70,9 +71,9 @@ def check_data(config_dict):
     id_list = file_utils.get_all_data_id(file_list)
 
     qsize = id_list.qsize()
-    logging("本次实际采集数据总量=:%s" % (qsize))
+    logging.info("本次实际采集数据总量=:%s" % (qsize))
     total_count = comm_utils.get_curr_nmpa_total_count(data_type)
-    logging("当前NMPA官网数据总量=:%s" % (total_count))
+    logging.info("当前NMPA官网数据总量=:%s" % (total_count))
 
     if qsize == total_count:
         return True
@@ -117,25 +118,26 @@ if __name__ == "__main__":
     root_path:文件存储路径
     =====================================================
     # '''
-    # get_type = 1
-    # data_type = 26
-    # root_path = 'E:/data/data_source/'
+    get_type = 1
+    data_type = 26
+    root_path = '/home/wlin/data/data_source/'
     # # 官网数据与已采集数据相等则不继续执行
     #
     # #初始化日志
-    # log_utils.logConfig(root_path,"xx.log")
+    LOG_NAME = "data_collection.log"
+    log_utils.log_config(root_path, data_type, LOG_NAME)
     #
     # #文件存储相关路径信息
-    # forder_dict = file_path_utils.get_folder_name(root_path)
+    forder_dict = config.get_config(root_path,data_type)
     #
     # #开始采集
     # save_data_list_to_disk(forder_dict,get_type,data_type)
     #
-    # if check_data(data_type) :
-    #     result = "本次数据采集成功!"
-    #     logging.info(result)
-    #
-    #     #执行数据处理程序 data_process.pys
+    if check_data(forder_dict) :
+        result = "本次数据采集成功!"
+        logging.info(result)
+
+        #执行数据处理程序 data_process.pys
     #
     # else:
     #     result = "本次数据采集失败!数据可能需要重新采集!"

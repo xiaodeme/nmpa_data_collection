@@ -1,4 +1,4 @@
-# coding=utf-8
+#coding=utf-8
 import sys
 import os
 reload(sys)
@@ -12,6 +12,7 @@ from utils import comm_utils
 from db_manager import  dbManager
 import data_collection_product
 from utils import config
+from utils import log_utils
 '''
 ==============
 数据处理主程序
@@ -58,11 +59,14 @@ if __name__ == "__main__":
 
      get_type = 1  # 该参数暂时未生效
      data_type = 26
-     root_path = 'E:/data/data_source/'
+     root_path = '/home/wlin/data/data_source/'
+
+     LOG_NAME = "data_collection.log"
+     log_utils.log_config(root_path, data_type, LOG_NAME)
 
      config_dict = config.get_config(root_path, data_type)
      data_process(config_dict)
-     pass
+
 
 
 
