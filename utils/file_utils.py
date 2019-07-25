@@ -3,6 +3,7 @@ import os
 import  Queue
 import json
 import logging
+import time
 
 def logConfig(log_name):
     # output format: output time - logging level - log messages
@@ -18,7 +19,7 @@ data:文件内容
 def write_file(file_name,data):
     with open(file_name , 'a') as f:
           f.writelines(data+"\n")
-    print(file_name + "文件写入成功!")
+    print("文件内容写入成功:%s" %(file_name))
 
 '''
 创建文件夹
@@ -26,12 +27,23 @@ def write_file(file_name,data):
 def mkdir_path(foder_path):
     if os.path.exists(foder_path) == False:
         os.makedirs(foder_path)
+        print("文件夹创建成功：%s" %(foder_path))
     else:
         print("文件夹：%s 已经存在，不会再创建!" % (foder_path))
     return True
 
 
-
+'''
+获取新增数据标识集合
+proccess.py处理后存在
+'''
+def get_add_data_id(file_name):
+    id_list = Queue.Queue()
+    with open(file_name, "r") as f:
+        jsonData = json.loads(f.read())
+        for x in jsonData:
+            id_list.put(x)
+    return id_list
 '''
 获取所有详细信息标识集合
 '''
@@ -41,9 +53,7 @@ def get_all_data_id(file_list):
         with open(fileName, "r") as f:
             jsonData = json.loads(f.read())
             for x in jsonData:
-                id_list.put(x["ID"])
-    # msg = "all data_id 都加入队列"
-    # print(msg)
+                id_list.put(int(x["ID"]))
     return id_list
 
 '''
@@ -74,7 +84,18 @@ def get_curr_max_pageno(file_dir):
         return int(max_pageno)
 
 
+def get_curr_date():
+    return time.strftime("%Y%m%d", time.localtime())
+
 if __name__ == "__main__":
-    f = "E:/data_source3/26/test"
-    mkdir_path(f)
-    pass
+
+    # fname = 'E:/data/data_source/20190724/data_info/add_data/add_data.json'
+    # if os.path.exists(format(fname)):
+    #     add_data_id = get_add_data_id(fname)
+    #     print add_data_id.empty()
+    #
+    # else:
+    #     print "add_data.json文件不存在，请运行data_process.py程序处理"
+
+    fname = 'E:/data/data_source/20190724testt/tt.ini'
+    write_file(fname,"test")

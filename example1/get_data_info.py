@@ -16,7 +16,7 @@ from utils import access_data_utils
 from utils import file_utils
 
 #获取配置信息
-dataTypeConfig = etc_utils.DataTypeConfig(26,"../etc/example1_data_type.cfg")
+dataTypeConfig = etc_utils.DataTypeConfig(26,"../etc/example1_get_type.cfg")
 save_root_path = dataTypeConfig.get_save_root_path()
 total_count = int(dataTypeConfig.get_total_count())
 

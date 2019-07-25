@@ -21,7 +21,7 @@ import traceback
 temp_queue = Queue.Queue()
 
 #获取配置信息
-dataTypeConfig = etc_utils.DataTypeConfig(26,"../etc/example2_data_type.cfg")
+dataTypeConfig = etc_utils.DataTypeConfig(26,"../etc/example2_get_type.cfg")
 data_list_url = dataTypeConfig.get_data_list_url()
 data_type =  int(dataTypeConfig.get_data_type())
 total_count = int(dataTypeConfig.get_total_count())
