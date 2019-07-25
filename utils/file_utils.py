@@ -5,12 +5,6 @@ import json
 import logging
 import time
 
-def logConfig(log_name):
-    # output format: output time - logging level - log messages
-    logging.basicConfig(filename=log_name, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
-
-
-
 '''
 fn：写入文件
 file_name:文件全路径
@@ -27,9 +21,9 @@ def write_file(file_name,data):
 def mkdir_path(foder_path):
     if os.path.exists(foder_path) == False:
         os.makedirs(foder_path)
-        print("文件夹创建成功：%s" %(foder_path))
+        logging.debug("文件夹创建成功：%s" %(foder_path))
     else:
-        print("文件夹：%s 已经存在，不会再创建!" % (foder_path))
+        logging.debug("文件夹：%s 已经存在，不会再创建!" % (foder_path))
 
 
 '''
@@ -86,6 +80,10 @@ def get_curr_max_pageno(file_dir):
 def get_curr_date():
     return time.strftime("%Y%m%d", time.localtime())
 
+
+
+
+
 if __name__ == "__main__":
 
     # fname = 'E:/data/data_source/20190724/data_info/add_data/add_data.json'
@@ -95,6 +93,4 @@ if __name__ == "__main__":
     #
     # else:
     #     print "add_data.json文件不存在，请运行data_process.py程序处理"
-
-    fname = 'E:/data/data_source/20190724testt/tt.ini'
-    write_file(fname,"test")
+    pass

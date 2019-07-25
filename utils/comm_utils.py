@@ -1,8 +1,6 @@
 #coding=utf-8
 from utils import etc_utils
 from utils import access_data_utils
-from utils import file_utils
-
 import json
 '''
 获取NMPA官网当前数据总量
@@ -23,5 +21,8 @@ def get_curr_nmpa_total_count(data_type):
 
 if __name__ == "__main__":
 
-    print get_curr_nmpa_total_count(26)
+    data_type = cf.get("base_config","data_type")
+    # print("当前NMPA官网data_type = %s,数据总量:%s" % (data_type,get_curr_nmpa_total_count(data_type)))
+
+
     pass

@@ -14,7 +14,7 @@ import time
 import  ConfigParser
 # 读取配置文件
 cf = ConfigParser.ConfigParser()
-cf.read("../etc/get_type.cfg")
+cf.read("../etc/base_config.cfg")
 '''
 ==============
 数据采集主程序:采集数据列表信息
@@ -100,7 +100,6 @@ def data_collection(config_dict):
         result = "本次数据采集失败!数据可能需要重新采集!"
         logging.info(result)
 
-        # 这里是重新采集的代码...
 
 if __name__ == "__main__":
     print("请运行main.py")
@@ -118,9 +117,9 @@ if __name__ == "__main__":
     root_path:文件存储路径
     =====================================================
     # '''
-    get_type = 1
-    data_type = 26
-    root_path = '/home/wlin/data/data_source/'
+    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
+    data_type = cf.get("base_config", "data_type")
+    root_path = cf.get("base_config", "root_path")
     # # 官网数据与已采集数据相等则不继续执行
     #
     # #初始化日志

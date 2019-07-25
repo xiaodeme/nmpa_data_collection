@@ -3,16 +3,20 @@ import pymysql
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-db =  pymysql.connect(
-        host='192.168.110.231',
-        port=3306,
-        user='RA',
-        passwd='12345qwert',
-        db='RASearchDB',
-        charset='utf8'
-    )
+
+def db_init():
+    db =  pymysql.connect(
+            host='127.0.0.1',
+            port=3306,
+            user='RA',
+            passwd='12345qwert',
+            db='RASearchDB',
+            charset='utf8'
+        )
+    return db
 
 def get_curr_ids():
+    db = db_init()
     data_id_list = []
     # 使用cursor()方法获取操作游标
     cursor = db.cursor()
@@ -35,6 +39,7 @@ def get_curr_ids():
     return data_id_list
 
 if __name__ == "__main__":
+    db = db_init()
     if db <> None:
         print("db connection success!")
     else:

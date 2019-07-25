@@ -1,19 +1,38 @@
 #coding=utf-8
 import logging
-from utils import  file_utils
+import  ConfigParser
 
-
-def log_config(root_path ,data_type,log_name):
+def log_config(log_filename):
     '''
-    日志配置：存储路径 = 配置根路径 + 数据类型 + logs
-    :todo 后续考虑日志按天生成
+    日志配置：
+    可以实现同时输出信息到控制台和log文件中
     :param root_path:
     :param data_type:
     :param log_name:
     :return:
     '''
-    log_foloder_name = root_path  + "/" +  str(data_type) + "/" + "/logs/"
-    file_utils.mkdir_path(log_foloder_name)
-    filename = log_foloder_name + log_name
-    logging.basicConfig(filename=filename, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%m-%d %H:%M',
+        filename=log_filename);
+    # define a Handler which writes INFO messages or higher to the sys.stderr
+    console = logging.StreamHandler();
+    console.setLevel(logging.DEBUG);
+    # # set a format which is simpler for console use
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s');
+    # # tell the handler to use this format
+    console.setFormatter(formatter);
+    logging.getLogger('').addHandler(console);
 
+
+if __name__ == "__main__":
+
+    LOG_NAME = "data_collection.log"
+    log_config("F:/data/" + LOG_NAME)
+
+    logging.debug('这个消息应该到日志文件和控制台')
+    logging.info('这应该这样')
+    logging.warning('and this，too')
+
+    # stream

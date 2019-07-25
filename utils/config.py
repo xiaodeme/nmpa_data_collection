@@ -5,7 +5,7 @@ from utils import file_utils
 from utils import log_utils
 import logging
 
-#程序运行基础配置信息
+#程序运行前生成的基础配置信息
 CONFIG_FILENAME =  "config.ini"
 
 #日志文件
@@ -23,23 +23,26 @@ def get_config(root_path = str,data_type=int):
     return dict
 
 def init_config(root_path,data_type,get_type):
-
-    #日志初始化配置
-    log_utils.log_config(root_path ,data_type,LOG_NAME)
-
     """
-    初始化程序运行基础配置信息
+    初始化程序运行前基础配置信息
     :todo 后续实现参数校验
     :param root_path: 文件存储根路径
     :param data_type: 数据采集类型  26 国产器械  27 进口器械
     :param get_type:  数据获取方式 1 urllib2方式 2 selenium方式
     :return:
     """
+
     # 当前数据存储根路径(定时执行， 按日期存放)
-    curr_root_path = get_curr_root_path(root_path,data_type)
+    curr_root_path = get_curr_root_path(root_path, data_type)
     if os.path.exists(curr_root_path):
-        logging.info("数据采集存储文件路径已存在:%s" % (curr_root_path))
+        print("当前数据存储根路径已存在:%s" % (curr_root_path))
         return
+
+
+    #日志初始化配置
+    log_foloder_name =   get_curr_root_path(root_path, data_type) + "/logs/"
+    file_utils.mkdir_path(log_foloder_name)
+    log_utils.log_config(log_foloder_name + LOG_NAME)
 
     # 初始数据存储路径
     data_list_folder_name = curr_root_path + "/data_list/"
@@ -69,16 +72,11 @@ def init_config(root_path,data_type,get_type):
                    'data_info_save_folder_name': data_info_save_folder_name
                    }
 
-    print config_dict
     config_filename = curr_root_path + "/" + CONFIG_FILENAME
     file_utils.write_file(config_filename, str(config_dict))
 
     logging.info("程序运行基础配置信息初始化完成:%s" % (config_filename))
-    logging.info(str(config_dict))
-
-def get_curr_log_path(root_path,data_type):
-    curr_root_path = root_path + "/" + str(data_type) + "/" + file_utils.get_curr_date() + "/"
-    return curr_root_path
+    logging.debug(str(config_dict))
 
 def get_curr_root_path(root_path,data_type):
     """
