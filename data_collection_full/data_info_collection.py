@@ -119,5 +119,5 @@ if __name__ == "__main__":
     DATA_LIST = file_utils.get_all_data_id(file_list)
     logging.info("数据采集计划总量:%s" % (DATA_LIST.qsize()))
     #
-    start(20,config_dict)
+    start(10,config_dict)
 
