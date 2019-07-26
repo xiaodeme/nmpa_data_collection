@@ -137,5 +137,3 @@ if __name__ == "__main__":
     if check_data(forder_dict) :
         result = "本次数据采集成功!"
         logging.info(result)
-
-    pass
