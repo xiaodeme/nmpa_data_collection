@@ -124,7 +124,7 @@ if __name__ == "__main__":
     # # 官网数据与已采集数据相等则不继续执行
 
     # 日志初始化配置
-    LOG_NAME = "data_list_collection.log"
+    LOG_NAME = "data_collection.log"
     log_filename = config.get_curr_root_path(root_path, data_type) + LOG_NAME
     log_utils.log_config(log_filename)
 
