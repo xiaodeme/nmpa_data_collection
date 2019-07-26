@@ -132,7 +132,7 @@ if __name__ == "__main__":
     forder_dict = config.get_config(root_path,data_type)
 
     # 数据采集
-    save_data_list_to_disk(forder_dict,get_type,data_type)
+    save_data_list_to_disk(forder_dict,forder_dict)
 
     if check_data(forder_dict) :
         result = "本次数据采集成功!"
