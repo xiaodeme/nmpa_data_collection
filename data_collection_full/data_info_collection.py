@@ -108,7 +108,7 @@ if __name__ == "__main__":
     #
     # 日志初始化配置
     LOG_NAME = "data_collection.log"
-    log_filename = config.get_curr_root_path(root_path,data_type) + LOG_NAME
+    log_filename = config.get_curr_root_path(root_path,data_type) +"/logs/"+ LOG_NAME
     log_utils.log_config(log_filename)
 
     config_dict = config.get_config(root_path, data_type)
@@ -119,5 +119,5 @@ if __name__ == "__main__":
     DATA_LIST = file_utils.get_all_data_id(file_list)
     logging.info("数据采集计划总量:%s" % (DATA_LIST.qsize()))
     #
-    start(10,config_dict)
+    start(20,config_dict)
 
