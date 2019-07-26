@@ -1,7 +1,5 @@
 #coding=utf-8
-from utils import file_utils
 from utils import config
-from utils import log_utils
 import data_collection
 import data_process
 import ConfigParser
