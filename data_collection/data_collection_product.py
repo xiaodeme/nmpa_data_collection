@@ -1,10 +1,6 @@
 # coding=utf-8
 import urllib2
-import datetime
 import time
-import json
-import os
-import Queue
 import threading
 import logging
 
@@ -12,12 +8,10 @@ import sys
 import  ConfigParser
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from utils import etc_utils
 from utils import access_data_utils
 from utils import file_utils
 from utils import log_utils
 from utils import config
-import  Queue
 #
 # '''
 # ==============
@@ -78,7 +72,7 @@ def get_data_info(thread_name,config_dict):
             logging.debug(info)
 
             # 休眠1秒，防止服务器判断为攻击
-            time.sleep(1)
+            time.sleep(2)
         except urllib2.URLError as e:
             ADD_DATA_LIST.put(data_id)
             print("URLError")
@@ -107,13 +101,6 @@ class myThread(threading.Thread):  # 继承父类threading.Thread
 
 
 
-#
-# def check_data(config_dict):
-#
-
-
-
-
 if __name__ == "__main__":
     get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
     data_type = cf.get("base_config", "data_type")
@@ -132,6 +119,5 @@ if __name__ == "__main__":
     add_folder_name = config_dict["add_folder_name"]
     add_filename = add_folder_name + "add_data.json"
     ADD_DATA_LIST = file_utils.get_add_data_id(add_filename)
-    print ADD_DATA_LIST.qsize()
 
-    start(8,config_dict)
+    start(20,config_dict)
