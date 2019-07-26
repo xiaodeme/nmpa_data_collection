@@ -17,8 +17,6 @@ cf.read("../etc/base_config.cfg")
 LOG_NAME = "data_collection.log"
 
 if __name__ == "__main__":
-    logging.info("==========欢迎使用NMPA数据采集程序=============")
-
     #运行程序基础参数
     get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
     data_type = cf.get("base_config", "data_type")

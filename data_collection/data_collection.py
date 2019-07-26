@@ -56,6 +56,7 @@ def save_data_list_to_disk(forder_dict):
         data_list_data = access_data_utils.get_data(data_list_url)
         file_utils.write_file(data_list_filename, data_list_data)
         logging.debug("写入文件成功:%s" % (data_list_filename))
+        logging.info("第%s页数据采集完成,剩余%s页,保存路径:%s" % (page_index,(total_page_no-page_index),data_list_filename))
         time.sleep(2)
     end_time = time.time()
     logging.info("数据采集结束时间:%s"  % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
@@ -117,31 +118,27 @@ if __name__ == "__main__":
     root_path:文件存储路径
     =====================================================
     # '''
-    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
-    data_type = cf.get("base_config", "data_type")
-    root_path = cf.get("base_config", "root_path")
-    # # 官网数据与已采集数据相等则不继续执行
-    #
-    # #初始化日志
-    LOG_NAME = "data_collection.log"
-    log_utils.log_config(root_path, data_type, LOG_NAME)
-    #
-    # #文件存储相关路径信息
-    forder_dict = config.get_config(root_path,data_type)
-    #
-    # #开始采集
-    # save_data_list_to_disk(forder_dict,get_type,data_type)
-    #
-    if check_data(forder_dict) :
-        result = "本次数据采集成功!"
-        logging.info(result)
 
-        #执行数据处理程序 data_process.pys
     #
-    # else:
-    #     result = "本次数据采集失败!数据可能需要重新采集!"
+    # get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
+    # data_type = cf.get("base_config", "data_type")
+    # root_path = cf.get("base_config", "root_path")
+    # # # 官网数据与已采集数据相等则不继续执行
+    # #
+    # # #初始化日志
+    # LOG_NAME = "data_collection.log"
+    # log_utils.log_config(root_path, data_type, LOG_NAME)
+    # #
+    # # #文件存储相关路径信息
+    # forder_dict = config.get_config(root_path,data_type)
+    # #
+    # # #开始采集
+    # # save_data_list_to_disk(forder_dict,get_type,data_type)
+    # #
+    # if check_data(forder_dict) :
+    #     result = "本次数据采集成功!"
     #     logging.info(result)
     #
-    #     #这里是重新采集的代码...
-    #
-    #
+    #     #执行数据处理程序 data_process.pys
+
+    pass

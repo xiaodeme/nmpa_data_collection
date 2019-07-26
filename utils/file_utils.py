@@ -13,17 +13,15 @@ data:文件内容
 def write_file(file_name,data):
     with open(file_name , 'a') as f:
           f.writelines(data+"\n")
-    print("文件内容写入成功:%s" %(file_name))
-
 '''
 创建文件夹
 '''
 def mkdir_path(foder_path):
-    if os.path.exists(foder_path) == False:
+    if  not os.path.exists(foder_path):
         os.makedirs(foder_path)
-        logging.debug("文件夹创建成功：%s" %(foder_path))
+        print("文件夹创建成功：%s" %(foder_path))
     else:
-        logging.debug("文件夹：%s 已经存在，不会再创建!" % (foder_path))
+        print("文件夹：%s 已经存在，不会再创建!" % (foder_path))
 
 
 '''

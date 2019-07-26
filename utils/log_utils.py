@@ -14,7 +14,6 @@ def log_config(log_filename):
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%m-%d %H:%M',
         filename=log_filename);
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler();
