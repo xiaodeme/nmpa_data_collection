@@ -2,9 +2,9 @@
 import threading
 import time
 import Queue
-
-#将cfda数据唯一标识存储到队列里面
-q = Queue.Queue()
+#
+# #将cfda数据唯一标识存储到队列里面
+# q = Queue.Queue()
 
 class Job(threading.Thread):
     def __init__(self, name):
@@ -21,16 +21,21 @@ class Job(threading.Thread):
             time.sleep(2)
         print "====Exiting " + self.name
 
-def initData():
-    for x in range(1000):
-        q.put(x)
-if __name__ == "__main__":
+# def initData():
+#     for x in range(1000):
+#         q.put(x)
 
-    initData()
+
+def start():
     threadList = []
     for i in range(100):
-        a = Job("thread="+str(i))
+        a = Job("thread=" + str(i))
         threadList.append(a)
         a.start()
     for t in threadList:
         t.join()
+
+if __name__ == "__main__":
+
+    # initData()
+    pass

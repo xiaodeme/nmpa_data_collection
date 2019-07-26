@@ -1,13 +1,13 @@
 # coding=utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+sys.path.append('../')
 import urllib2
 import time
 import threading
 import logging
-
-import sys
 import  ConfigParser
-reload(sys)
-sys.setdefaultencoding('utf-8')
 from utils import access_data_utils
 from utils import file_utils
 from utils import log_utils
@@ -105,20 +105,19 @@ if __name__ == "__main__":
     get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
-
+    #
     # 日志初始化配置
-    LOG_NAME = "data_collection.log"
+    LOG_NAME = "data_info_collection.log"
     log_filename = config.get_curr_root_path(root_path,data_type) + LOG_NAME
     log_utils.log_config(log_filename)
 
-
     config_dict = config.get_config(root_path, data_type)
-
 
     # 获取待新增的数据
     data_list_folder_name = config_dict["data_list_folder_name"]
     file_list = file_utils.get_file_list(data_list_folder_name)
     DATA_LIST = file_utils.get_all_data_id(file_list)
     logging.info("数据采集计划总量:%s" % (DATA_LIST.qsize()))
-
+    #
     start(20,config_dict)
+
