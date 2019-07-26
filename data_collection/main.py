@@ -1,9 +1,14 @@
 #coding=utf-8
+import  os
+import sys
+sys.path.append('../')
+
 from utils import config
 import data_collection
 import data_process
 import ConfigParser
 import logging
+
 # 读取基础配置文件
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
