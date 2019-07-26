@@ -92,13 +92,13 @@ def data_collection(config_dict):
 
     #数据检查
     if check_data(config_dict):
-        result = "本次数据采集成功!"
+        result = "本次数据采集结果:本次数据采集成功!"
         logging.info(result)
 
-        # 执行数据处理程序 data_process.pys
+        # 执行数据处理程序 data_process.py
 
     else:
-        result = "本次数据采集失败!数据可能需要重新采集!"
+        result = "本次数据采集结果:本次数据采集失败!数据可能需要重新采集!"
         logging.info(result)
 
 

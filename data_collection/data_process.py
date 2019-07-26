@@ -33,21 +33,21 @@ def data_process(config_dict):
     data_list_folder_name = config_dict["data_list_folder_name"]
 
     if  os.path.exists(add_filename):
-        logging.debug("本次新增减少文件已经存储:%s" % (add_filename))
+        logging.debug("本次数据分析:本次新增减少文件已经存储:%s" % (add_filename))
         return
 
     curr_data_id_list = dbManager.get_curr_ids()
-    logging.info("数据库已经采集数据数量: %s" %  (len(curr_data_id_list)))
+    logging.info("本次数据分析:数据库已经采集数据数量: %s" %  (len(curr_data_id_list)))
 
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_all_data_id(file_list)
     new_data_id_list = list(id_list.queue)
-    logging.info("本次数据采集总量:%s" % (len(new_data_id_list)))
+    logging.info("本次数据分析:本次数据采集总量:%s" % (len(new_data_id_list)))
 
 
     #本次新增数据
     add_data= list(set(new_data_id_list).difference(set(curr_data_id_list)))  # b中有而a中没有的
-    logging.info("计算本次新增数据:%s" % (len(add_data)))
+    logging.info("本次数据分析:本次新增数据:%s" % (len(add_data)))
     file_utils.write_file(add_filename,str(add_data))
 
 
