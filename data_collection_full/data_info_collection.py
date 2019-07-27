@@ -56,8 +56,7 @@ def get_data_info(thread_name,config_dict):
             save_filename = data_info_save_folder_name + save_filename
 
             # 列表详情页url
-            get_key = "get_type_" + str(config_dict["get_type"])
-            data_info_url = cf.get(get_key ,"data_info_url")
+            data_info_url = cf.get("access_url" ,"data_info_url")
             data_info_url = data_info_url.format(config_dict["data_type"], data_id)
 
             # 数据采集并保存到本地
@@ -72,7 +71,7 @@ def get_data_info(thread_name,config_dict):
             info = save_filename + "写入成功! id: " + str(data_id)
             logging.debug(info)
 
-            # 休眠1秒，防止服务器判断为攻击
+            # 休眠2秒，防止服务器判断为攻击
             time.sleep(2)
         except urllib2.URLError as e:
             DATA_LIST.put(data_id)
@@ -100,32 +99,48 @@ class myThread(threading.Thread):  # 继承父类threading.Thread
         self.__flag.set()       # 将线程从暂停状态恢复, 如何已经暂停的话
         self.__running.clear()  # 设置为False
 
-
-
-#程序运行前生成的基础配置信息
-CONFIG_FILENAME =  "config.ini"
-#日志文件
-LOG_NAME = "data_collection.log"
 if __name__ == "__main__":
-    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
+    # 运行程序基础参数
+    config_filename = cf.get("default_config", "config_filename")
+    log_name = cf.get("default_config", "log_name")
+    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效,未来可能需要实现方式
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-    log_filename = config.get_curr_root_path(root_path,data_type) +"/logs/"+ LOG_NAME
-    log_utils.log_config(log_filename)
+    # 0.当前数据采集存储路径
+    curr_date = file_utils.get_curr_date()
+    curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
-    curr_root_path = config.get_curr_root_path(root_path, data_type)
-    if not os.path.exists(curr_root_path + CONFIG_FILENAME):
-        logging.error("程序运行基础配置信息:%s:未初始化，请先运行init.py!" % (CONFIG_FILENAME))
+    # 1.读取配置信息
+    if not os.path.exists(curr_root_path + config_filename):
+        print("程序运行基础配置信息:%s:未初始化，请先运行init.py!" % (config_filename))
         sys.exit(0)
+    else:
+        config_dict = config.get_config(root_path, data_type, curr_date)
 
-    config_dict = config.get_config(root_path, data_type)
+    # 2.初始化日志
+    log_utils.log_config(curr_root_path + log_name)
 
-    # 获取待新增的数据
+    # 3. 获取待新增的数据
     data_list_folder_name = config_dict["data_list_folder_name"]
     file_list = file_utils.get_file_list(data_list_folder_name)
-    DATA_LIST = file_utils.get_all_data_id(file_list)
-    logging.info("数据采集计划总量:%s" % (DATA_LIST.qsize()))
-    #
-    start(20,config_dict)
+    DATA_LIST = file_utils.get_data_info_id(file_list)
+    add_data_count = DATA_LIST.qsize()
+    logging.info("[data_info]采集日期=%s,计划新增数据采集数据总量=:%s" % (curr_date, add_data_count))
 
+    # data_info > save 数据采集总量检查
+    data_info_save_folder_name = config_dict["data_info_save_folder_name"]
+    file_list = file_utils.get_file_list(data_info_save_folder_name)
+    data_info_count = file_utils.data_info_count(file_list)
+    logging.info("[data_info]采集日期=%s,实际新增数据采集数据总量=:%s" % (curr_date, data_info_count))
+
+
+    if add_data_count == data_info_count:
+        logging.info("采集日期=%s,新增数据采集已经完成!" % (curr_date))
+        sys.exit(0)
+    else:
+        data_info_save_folder_name = config_dict["data_info_save_folder_name"]
+        if file_utils.clear_folder(data_info_save_folder_name):
+            logging.info("清空文件夹文件:%s" % (data_info_save_folder_name))
+        start(10, config_dict)
+        # pass

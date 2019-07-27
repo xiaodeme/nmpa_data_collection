@@ -1,5 +1,6 @@
 # coding=utf-8
 import sys
+sys.path.append('../')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import os
@@ -104,7 +105,7 @@ def data_collection(config_dict):
 if __name__ == "__main__":
     # if len(sys.argv) <> 3:
     #     print("运行程序需要2个参数 get_type = {1,2} data_type = {25,26}")
-    #     print("运行示例:python data_collection.py 1 26")
+    #     print("运行示例:python data_list_collection.py 1 26")
     '''
     ======================================================
     :todo

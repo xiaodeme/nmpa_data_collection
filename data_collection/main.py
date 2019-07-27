@@ -3,7 +3,7 @@ import sys
 sys.path.append('../')
 
 from utils import config
-import data_collection
+import data_list_collection
 import ConfigParser
 
 # 读取基础配置文件
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     config_dict = config.get_config(root_path,data_type)
 
     # 第三步：运行数据采集程序
-    data_collection.data_collection(config_dict)
+    data_list_collection.data_collection(config_dict)
 
     #第四步：数据处理
     # data_process.data_process(config_dict)
