@@ -51,8 +51,7 @@ def save_data_list_to_disk(config_dict):
         data_list_filename = data_list_folder_name + data_list_filename
 
         # 列表页url(从配置文件读取)
-        get_key = "get_type_" + str(get_type)
-        data_list_url = cf.get(get_key ,"data_list_url")
+        data_list_url = cf.get("access_url" ,"data_list_url")
         data_list_url = data_list_url.format(data_type, page_index, page_size)
         logging.debug("数据采集地址:%s" % (data_list_url))
 
