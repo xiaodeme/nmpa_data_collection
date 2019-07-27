@@ -3,11 +3,11 @@ import urllib2
 import time
 import threading
 import logging
-
 import sys
 import  ConfigParser
 reload(sys)
 import os
+sys.path.append('../')
 sys.setdefaultencoding('utf-8')
 from utils import access_data_utils
 from utils import file_utils
@@ -56,8 +56,7 @@ def get_data_info(thread_name,config_dict):
             save_filename = data_info_save_folder_name + save_filename
 
             # 列表详情页url
-            get_key = "get_type_" + str(config_dict["get_type"])
-            data_info_url = cf.get(get_key ,"data_info_url")
+            data_info_url = cf.get("access_url" ,"data_info_url")
             data_info_url = data_info_url.format(config_dict["data_type"], data_id)
 
             # 数据采集并保存到本地

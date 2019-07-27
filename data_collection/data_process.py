@@ -1,6 +1,7 @@
 #coding=utf-8
-import sys
 import os
+import sys
+sys.path.append('../')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import ConfigParser
