@@ -7,7 +7,6 @@ sys.setdefaultencoding('utf-8')
 import ConfigParser
 import logging
 from utils import file_utils
-from db_manager import  dbManager
 from utils import config
 from utils import log_utils
 # 读取基础配置文件

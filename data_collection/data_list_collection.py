@@ -92,7 +92,7 @@ def data_collection(config_dict):
     """
     #数据检查
     if check_data(config_dict):
-       logging.info("数据集已经完成采集!")
+       logging.info("data_list数据集已经完成采集!")
        return
 
 

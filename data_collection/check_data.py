@@ -1,6 +1,7 @@
 #coding=utf-8
 import sys
 import os
+sys.path.append('../')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import ConfigParser
@@ -33,7 +34,6 @@ def check_data(curr_date):
     # 3. 获取待新增的数据
     add_folder_name = config_dict["add_folder_name"]
     add_filename = add_folder_name + "add_data.json"
-    print add_filename
     ADD_DATA_LIST = file_utils.get_add_data_id(add_filename)
     add_data_count = ADD_DATA_LIST.qsize()
     logging.info("[data_info]采集日期=%s,计划新增数据采集数据总量=:%s" % (curr_date, add_data_count))
