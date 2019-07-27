@@ -5,6 +5,12 @@
 #### 一、运行data_collection_full下程序:该包下程序用于首次生成当前日期的全量数据
 
 1.配置文件： base_config.ini
+```
+[base_config]
+data_type = 26
+get_type = 1
+root_path = /data/data_source/
+```
 2.程序运行前配置初始化
 ```
  python init.py
@@ -26,7 +32,14 @@ python check_data.py
 说明：NMPA网站数据每日动态变化，可能新增、亦可能减少数据。所以数据采集逻辑包含新增、减少两个部分
 
 1.配置文件： base_config.ini
+
 2.程序运行前配置初始化
+```
+[base_config]
+data_type = 26
+get_type = 1
+root_path = /data/data_source/
+```
 ```
  python init.py
 ```   
