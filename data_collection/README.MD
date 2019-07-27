@@ -59,4 +59,7 @@ crontab -e
 crontab -e 新增
 crontab -l 查看
 crontab -r 删除
+sudo service crond restart 重启
+sudo service crond status  查看状态
+sudo cat /var/log/cron     查看执行任务
 ```
