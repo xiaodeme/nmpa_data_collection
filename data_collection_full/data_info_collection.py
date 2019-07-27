@@ -12,6 +12,7 @@ from utils import access_data_utils
 from utils import file_utils
 from utils import log_utils
 from utils import config
+import os
 #
 # '''
 # ==============
@@ -101,15 +102,22 @@ class myThread(threading.Thread):  # 继承父类threading.Thread
 
 
 
+#程序运行前生成的基础配置信息
+CONFIG_FILENAME =  "config.ini"
+#日志文件
+LOG_NAME = "data_collection.log"
 if __name__ == "__main__":
     get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
-    #
-    # 日志初始化配置
-    LOG_NAME = "data_collection.log"
+
     log_filename = config.get_curr_root_path(root_path,data_type) +"/logs/"+ LOG_NAME
     log_utils.log_config(log_filename)
+
+    curr_root_path = config.get_curr_root_path(root_path, data_type)
+    if not os.path.exists(curr_root_path + CONFIG_FILENAME):
+        logging.error("程序运行基础配置信息:%s:未初始化，请先运行init.py!" % (CONFIG_FILENAME))
+        sys.exit(0)
 
     config_dict = config.get_config(root_path, data_type)
 

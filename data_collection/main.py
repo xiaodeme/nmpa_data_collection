@@ -1,13 +1,10 @@
 #coding=utf-8
-import  os
 import sys
 sys.path.append('../')
 
 from utils import config
 import data_collection
-import data_process
 import ConfigParser
-import logging
 
 # 读取基础配置文件
 cf = ConfigParser.ConfigParser()
@@ -32,15 +29,11 @@ if __name__ == "__main__":
     data_collection.data_collection(config_dict)
 
     #第四步：数据处理
-    data_process.data_process(config_dict)
+    # data_process.data_process(config_dict)
 
-    #第五步：启动新增数据采集程序 data_collection_product.py
+    #第五步：启动新增数据采集程序 data_collection_new_data.py
     # run data_collection_product
 
-    #config.py
-    #data_collection.py
-    #data_process.py
-    #data_collection_product.py
     pass
 
 

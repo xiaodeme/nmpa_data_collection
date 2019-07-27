@@ -21,7 +21,8 @@ cf.read("../etc/base_config.cfg")
 '''
 ADD_DATA_FILENAME = "/add_data.json"
 REDUCE_DATA_FILENAME = "/reduce_data.json"
-
+#程序运行前生成的基础配置信息
+CONFIG_FILENAME =  "config.ini"
 def data_process(config_dict):
     """
     本次采集数据与当前数据库对比，将新增、减少数据存入add、reduct文件夹
@@ -33,41 +34,59 @@ def data_process(config_dict):
     data_list_folder_name = config_dict["data_list_folder_name"]
 
     if  os.path.exists(add_filename):
-        logging.debug("本次数据分析:本次新增减少文件已经存储:%s" % (add_filename))
+        logging.info("数据分析:本次新增减少[add/reduct]文件已经存储:%s" % (add_filename))
         return
 
-    curr_data_id_list = dbManager.get_curr_ids()
-    logging.info("本次数据分析:数据库已经采集数据数量: %s" %  (len(curr_data_id_list)))
+    last_data_list_folder_name  = config.get_last_root_path(root_path,data_type)
+    file_list = file_utils.get_file_list(last_data_list_folder_name +  "/data_list/")
+    id_list = file_utils.get_data_info_id(file_list)
+    curr_data_id_list =  list(id_list.queue)
+    logging.info("数据分析:上一天[%s]数据采集数量: %s" %  (file_utils.get_last_date(),len(curr_data_id_list)))
 
     file_list = file_utils.get_file_list(data_list_folder_name)
-    id_list = file_utils.get_all_data_id(file_list)
+    id_list = file_utils.get_data_info_id(file_list)
     new_data_id_list = list(id_list.queue)
-    logging.info("本次数据分析:本次数据采集总量:%s" % (len(new_data_id_list)))
+    logging.info("数据分析:今天[%s]数据采集数量: %s" % (file_utils.get_curr_date(),len(new_data_id_list)))
 
-
-    #本次新增数据
+    # 本次新增数据
     add_data= list(set(new_data_id_list).difference(set(curr_data_id_list)))  # b中有而a中没有的
-    logging.info("本次数据分析:本次新增数据:%s" % (len(add_data)))
     file_utils.write_file(add_filename,str(add_data))
+    logging.info("数据分析:本次新增数据:%s" % (len(add_data)))
 
-
-    #本次减少数据
+    # 本次减少数据
     reduce_data =  list(set(curr_data_id_list).difference(set(new_data_id_list)))  # a中有而b中没有的
     file_utils.write_file(reduce_filename, str(reduce_data))
-    logging.info("计算本次减少数据:%s" %(len(reduce_data)))
+    logging.info("数据分析:本次减少数据:%s" %(len(reduce_data)))
 
 
 
 
 if __name__ == "__main__":
-     print("请运行main.py")
 
-     get_type =   cf.get("base_config","get_type")  # 该参数暂时未生效
-     data_type =  cf.get("base_config","data_type")
-     root_path =  cf.get("base_config","root_path")
+    # 运行程序基础参数
+    config_filename = cf.get("default_config", "config_filename")
+    log_name = cf.get("default_config", "log_name")
+    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效,未来可能需要实现方式
+    data_type = cf.get("base_config", "data_type")
+    root_path = cf.get("base_config", "root_path")
 
-     config_dict = config.get_config(root_path, data_type)
-     data_process(config_dict)
+    #0.当前数据采集存储路径
+    curr_date = file_utils.get_curr_date()
+    curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
+
+    #1.读取配置信息
+    config_dict = None
+    if not os.path.exists(curr_root_path + config_filename):
+        print("程序运行基础配置信息:%s:未初始化，请先运行init.py!" % (config_filename))
+        sys.exit(0)
+    else:
+        config_dict = config.get_config(root_path,data_type,curr_date)
+
+    # 2.初始化日志
+    log_utils.log_config(curr_root_path + log_name)
+
+    #3. 数据分析3
+    data_process(config_dict)
 
 
 

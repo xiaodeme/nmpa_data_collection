@@ -2,10 +2,9 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from utils import etc_utils
-from utils import access_data_utils
-from utils import file_utils
+import os
 from utils import config
+from utils import access_data_utils
 from utils import comm_utils
 from utils import log_utils
 from utils import file_utils
@@ -20,9 +19,13 @@ cf.read("../etc/base_config.cfg")
 数据采集主程序:采集数据列表信息
 ==============
 '''
-def save_data_list_to_disk(forder_dict):
-    data_type = int(forder_dict["data_type"])
-    get_type = int(forder_dict["get_type"])
+def save_data_list_to_disk(config_dict):
+    data_type = int(config_dict["data_type"])
+    get_type = int(config_dict["get_type"])
+    data_list_folder_name  =  config_dict["data_list_folder_name"]
+    if file_utils.clear_folder(data_list_folder_name):
+        logging.info("清空文件夹文件:%s" % (data_list_folder_name))
+
     begin_time = time.time()
     logging.info("数据采集开始时间:%s"  %  (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
     # 当前官网数据总量
@@ -44,7 +47,7 @@ def save_data_list_to_disk(forder_dict):
 
         # data_list保存文件名(文件按页码存储，每页PAGE_SIZE条)
         data_list_filename = "data_list_%s_%s.json" % (data_type,page_index)
-        data_list_filename = forder_dict["data_list_folder_name"] + data_list_filename
+        data_list_filename = data_list_folder_name + data_list_filename
 
         # 列表页url(从配置文件读取)
         get_key = "get_type_" + str(get_type)
@@ -69,10 +72,9 @@ def check_data(config_dict):
     data_type = config_dict["data_type"]
 
     file_list = file_utils.get_file_list(data_list_folder_name)
-    id_list = file_utils.get_all_data_id(file_list)
-
+    id_list = file_utils.get_data_info_id(file_list)
     qsize = id_list.qsize()
-    logging.info("本次实际采集数据总量=:%s" % (qsize))
+    logging.info("数据采集总量=:%s" % (qsize))
     total_count = comm_utils.get_curr_nmpa_total_count(data_type)
     logging.info("当前NMPA官网数据总量=:%s" % (total_count))
 
@@ -82,33 +84,30 @@ def check_data(config_dict):
         return False
 
 
+
 def data_collection(config_dict):
     """
-    :param forder_dict: 程序运行基础配置信息
+    :param config_dict: 程序运行基础配置信息
     :return:
     """
+    #数据检查
+    if check_data(config_dict):
+       logging.info("数据集已经完成采集!")
+       return
+
+
     #数据采集
     save_data_list_to_disk(config_dict)
 
-    #数据检查
-    if check_data(config_dict):
-        result = "本次数据采集结果:本次数据采集成功!"
-        logging.info(result)
 
-        # 执行数据处理程序 data_process.py
-
-    else:
-        result = "本次数据采集结果:本次数据采集失败!数据可能需要重新采集!"
-        logging.info(result)
-
-
+#程序运行前生成的基础配置信息
 if __name__ == "__main__":
-    print("请运行main.py")
     # if len(sys.argv) <> 3:
     #     print("运行程序需要2个参数 get_type = {1,2} data_type = {25,26}")
     #     print("运行示例:python data_collection.py 1 26")
     '''
     ======================================================
+    :todo
     get_type: 数据获取方式
             1 urllib2方式
             2 selenium方式
@@ -118,27 +117,28 @@ if __name__ == "__main__":
     root_path:文件存储路径
     =====================================================
     # '''
+    #运行程序基础参数
+    config_filename = cf.get("default_config", "config_filename")
+    log_name = cf.get("default_config", "log_name")
+    get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效,未来可能需要实现方式
+    data_type = cf.get("base_config", "data_type")
+    root_path = cf.get("base_config", "root_path")
 
-    #
-    # get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
-    # data_type = cf.get("base_config", "data_type")
-    # root_path = cf.get("base_config", "root_path")
-    # # # 官网数据与已采集数据相等则不继续执行
-    # #
-    # # #初始化日志
-    # LOG_NAME = "data_collection.log"
-    # log_utils.log_config(root_path, data_type, LOG_NAME)
-    # #
-    # # #文件存储相关路径信息
-    # forder_dict = config.get_config(root_path,data_type)
-    # #
-    # # #开始采集
-    # # save_data_list_to_disk(forder_dict,get_type,data_type)
-    # #
-    # if check_data(forder_dict) :
-    #     result = "本次数据采集成功!"
-    #     logging.info(result)
-    #
-    #     #执行数据处理程序 data_process.pys
+    #0.当前数据采集存储路径
+    curr_date = file_utils.get_curr_date()
+    curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
-    pass
+    #1.读取配置信息
+    config_dict = None
+    if not os.path.exists(curr_root_path + config_filename):
+        print("程序运行基础配置信息:%s:未初始化，请先运行init.py!" % (config_filename))
+        sys.exit(0)
+    else:
+        config_dict = config.get_config(root_path,data_type,curr_date)
+
+    #2.初始化日志
+    log_utils.log_config(curr_root_path + log_name)
+
+    #3.开始采集
+    data_collection(config_dict)
+

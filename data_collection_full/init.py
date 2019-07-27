@@ -17,7 +17,7 @@ if __name__ == "__main__":
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-    # 第一步：初始化程序运行配置基础信息
+    #初始化程序运行配置基础信息
     config.init_config(root_path, data_type,get_type)
 
 

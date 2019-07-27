@@ -3,9 +3,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 sys.path.append('../')
-from utils import etc_utils
 from utils import access_data_utils
-from utils import file_utils
 from utils import config
 from utils import comm_utils
 from utils import log_utils
@@ -13,6 +11,7 @@ from utils import file_utils
 import logging
 import time
 import  ConfigParser
+import os
 # 读取配置文件
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
@@ -70,7 +69,7 @@ def check_data(config_dict):
     data_type = config_dict["data_type"]
 
     file_list = file_utils.get_file_list(data_list_folder_name)
-    id_list = file_utils.get_all_data_id(file_list)
+    id_list = file_utils.get_data_info_id(file_list)
 
     qsize = id_list.qsize()
     logging.info("本次实际采集数据总量=:%s" % (qsize))
@@ -93,47 +92,36 @@ def data_collection(config_dict):
 
     #数据检查
     if check_data(config_dict):
-        result = "本次数据采集结果:本次数据采集成功!"
+        result = "数据采集结果:数据采集成功!"
         logging.info(result)
         # 执行数据处理程序 data_process.py
 
     else:
-        result = "本次数据采集结果:本次数据采集失败!数据可能需要重新采集!"
+        result = "数据采集结果:数据采集失败!数据可能需要重新采集!"
         logging.info(result)
 
+#程序运行前生成的基础配置信息
+CONFIG_FILENAME =  "config.ini"
+#日志文件
+LOG_NAME = "data_collection.log"
 
 if __name__ == "__main__":
-    print("请运行main.py")
-    # if len(sys.argv) <> 3:
-    #     print("运行程序需要2个参数 get_type = {1,2} data_type = {25,26}")
-    #     print("运行示例:python data_collection.py 1 26")
-    '''
-    ======================================================
-    get_type: 数据获取方式
-            1 urllib2方式
-            2 selenium方式
-    data_type:数据采集类型 
-            26 国产器械  
-            27 进口器械
-    root_path:文件存储路径
-    =====================================================
-    # '''
     get_type = cf.get("base_config", "get_type")  # 该参数暂时未生效
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
     # # 官网数据与已采集数据相等则不继续执行
 
     # 日志初始化配置
-    LOG_NAME = "data_collection.log"
     log_filename = config.get_curr_root_path(root_path,data_type) +"/logs/"+ LOG_NAME
     log_utils.log_config(log_filename)
+
+    curr_root_path = config.get_curr_root_path(root_path, data_type)
+    if not os.path.exists(curr_root_path + CONFIG_FILENAME):
+        logging.error("程序运行基础配置信息:%s:为初始化，请先运行init.py!" % (CONFIG_FILENAME))
+        sys.exit(0)
 
     # 文件存储相关路径信息
     forder_dict = config.get_config(root_path,data_type)
 
     # 数据采集
-    save_data_list_to_disk(forder_dict)
-
-    if check_data(forder_dict) :
-        result = "本次数据采集成功!"
-        logging.info(result)
+    data_collection(forder_dict)

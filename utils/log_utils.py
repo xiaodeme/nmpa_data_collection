@@ -15,14 +15,16 @@ def log_config(log_filename):
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         filename=log_filename);
+
+    #下方代码可以在本地测试，可同时输出到控制台
     # define a Handler which writes INFO messages or higher to the sys.stderr
-    # console = logging.StreamHandler();
-    # console.setLevel(logging.DEBUG);
-    # # # set a format which is simpler for console use
-    # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s');
-    # # # tell the handler to use this format
-    # console.setFormatter(formatter);
-    # logging.getLogger('').addHandler(console);
+    console = logging.StreamHandler();
+    console.setLevel(logging.DEBUG);
+    # # set a format which is simpler for console use
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s');
+    # # tell the handler to use this format
+    console.setFormatter(formatter);
+    logging.getLogger('').addHandler(console);
 
 
 if __name__ == "__main__":

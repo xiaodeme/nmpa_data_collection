@@ -11,6 +11,7 @@ def get_curr_nmpa_total_count(data_type):
     #访问url
     data_list_url = dataTypeConfig.get_data_list_url()
     data_list_url = data_list_url.format(dataTypeConfig.get_data_type(), 1, 1)
+    # print data_list_url
 
     #数据采集
     data_list_data = access_data_utils.get_data(data_list_url)

@@ -2,8 +2,15 @@
 import os
 import  Queue
 import json
-import logging
+import datetime
 import time
+
+
+def clear_folder(forder_name):
+    file_list = get_file_list(forder_name)
+    for file_name in file_list:
+        os.remove(file_name)
+    return True
 
 '''
 fn：写入文件
@@ -35,10 +42,25 @@ def get_add_data_id(file_name):
         for x in jsonData:
             id_list.put(x)
     return id_list
+
+def data_info_count(file_list):
+    """
+    获取文件夹的文件一共有多少行
+    :param file_list:
+    :return:
+    """
+    count = 0
+    for filename in file_list:
+        f = open(filename, "r")
+        for line in f.readlines():
+            count = count + 1
+    return count
+
+
 '''
 获取所有详细信息标识集合
 '''
-def get_all_data_id(file_list):
+def get_data_info_id(file_list):
     id_list = Queue.Queue()
     for fileName in file_list:
         with open(fileName, "r") as f:
@@ -78,7 +100,8 @@ def get_curr_max_pageno(file_dir):
 def get_curr_date():
     return time.strftime("%Y%m%d", time.localtime())
 
-
+def get_last_date():
+    return (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime("%Y%m%d")
 
 
 
