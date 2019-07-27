@@ -3,6 +3,7 @@ from utils import etc_utils
 from utils import access_data_utils
 import json
 import  ConfigParser
+import platform
 # 读取配置文件
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
@@ -22,11 +23,15 @@ def get_curr_nmpa_total_count(data_type):
 
     return  int(jsonData[0]["COUNT"])
 
+def is_windows():
+    sysstr = platform.system()
+    if(sysstr =="Windows"):
+        return True
 
 if __name__ == "__main__":
 
     data_type = cf.get("base_config","data_type")
     # print("当前NMPA官网data_type = %s,数据总量:%s" % (data_type,get_curr_nmpa_total_count(data_type)))
-
+    print is_windows()
 
     pass
