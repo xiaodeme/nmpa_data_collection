@@ -74,7 +74,7 @@ def check_data(config_dict):
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_data_info_id(file_list)
     qsize = id_list.qsize()
-    logging.info("数据采集总量=:%s" % (qsize))
+    logging.info("data_list数据已采集总量=:%s" % (qsize))
     total_count = comm_utils.get_curr_nmpa_total_count(data_type)
     logging.info("当前NMPA官网数据总量=:%s" % (total_count))
 
@@ -93,11 +93,9 @@ def data_collection(config_dict):
     #数据检查
     if check_data(config_dict):
        logging.info("data_list数据集已经完成采集!")
-       return
-
-
-    #数据采集
-    save_data_list_to_disk(config_dict)
+    else:
+        #数据采集
+        save_data_list_to_disk(config_dict)
 
 
 #程序运行前生成的基础配置信息

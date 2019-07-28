@@ -22,7 +22,7 @@ if __name__ == "__main__":
     curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
     tips = "===============================\n" \
-           "程序运行前请先对base_config.ini进行配置：\n" \
+           "程序运行前先对base_config.ini进行配置：\n" \
            "https://github.com/xiaodeme    \n" \
            "运行日志请查看 logs/data_collection.log    \n" \
            "==============================="
