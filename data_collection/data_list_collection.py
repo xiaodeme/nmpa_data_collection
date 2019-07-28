@@ -1,4 +1,4 @@
-#coding=gbk
+#coding=utf-8
 import sys
 sys.path.append('../')
 reload(sys)
@@ -12,12 +12,12 @@ from utils import file_utils
 import logging
 import time
 import  ConfigParser
-# ¶ÁÈ¡ÅäÖÃÎÄ¼ş
+# è¯»å–é…ç½®æ–‡ä»¶
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 '''
 ==============
-Êı¾İ²É¼¯Ö÷³ÌĞò:²É¼¯Êı¾İÁĞ±íĞÅÏ¢
+æ•°æ®é‡‡é›†ä¸»ç¨‹åº:é‡‡é›†æ•°æ®åˆ—è¡¨ä¿¡æ¯
 ==============
 '''
 def save_data_list_to_disk(config_dict):
@@ -25,45 +25,45 @@ def save_data_list_to_disk(config_dict):
     get_type = int(config_dict["get_type"])
     data_list_folder_name  =  config_dict["data_list_folder_name"]
     if file_utils.clear_folder(data_list_folder_name):
-        logging.info("Çå¿ÕÎÄ¼ş¼ĞÎÄ¼ş:%s" % (data_list_folder_name))
+        logging.info("æ¸…ç©ºæ–‡ä»¶å¤¹æ–‡ä»¶:%s" % (data_list_folder_name))
 
     begin_time = time.time()
-    logging.info("Êı¾İ²É¼¯¿ªÊ¼Ê±¼ä:%s"  %  (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-    # µ±Ç°¹ÙÍøÊı¾İ×ÜÁ¿
+    logging.info("æ•°æ®é‡‡é›†å¼€å§‹æ—¶é—´:%s"  %  (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    # å½“å‰å®˜ç½‘æ•°æ®æ€»é‡
     total_count = comm_utils.get_curr_nmpa_total_count(data_type)
-    # Ã¿Ò³ÏÔÊ¾×ÜÊıÁ¿(¼´Ã¿¸öÎÄ¼ş±£´æ1000ÌõÊı¾İ)
+    # æ¯é¡µæ˜¾ç¤ºæ€»æ•°é‡(å³æ¯ä¸ªæ–‡ä»¶ä¿å­˜1000æ¡æ•°æ®)
     page_size = 1000;
     if total_count < page_size:
         page_size = total_count
 
-    # ¼ÆËã¹²¶àÉÙÒ³
+    # è®¡ç®—å…±å¤šå°‘é¡µ
     if total_count % page_size == 0:
         total_page_no = total_count / page_size
     else:
         total_page_no = total_count / page_size + 1
-    # logging("Êı¾İ×ÜÁ¿=%s,Ã¿Ò³²É¼¯Á¿=%s£¬¹²¼Æ%sÒ³:" % (total_count,page_size,total_page_no))
-    logging.info("µ±Ç°NMPA¹ÙÍøÊı¾İ:data_type=%s,Êı¾İ×ÜÁ¿=%s,Ã¿Ò³²É¼¯Á¿%s,¹²¼Æ%sÒ³" % (data_type, total_count,page_size,total_page_no))
+    # logging("æ•°æ®æ€»é‡=%s,æ¯é¡µé‡‡é›†é‡=%sï¼Œå…±è®¡%sé¡µ:" % (total_count,page_size,total_page_no))
+    logging.info("å½“å‰NMPAå®˜ç½‘æ•°æ®:data_type=%s,æ•°æ®æ€»é‡=%s,æ¯é¡µé‡‡é›†é‡%s,å…±è®¡%sé¡µ" % (data_type, total_count,page_size,total_page_no))
     for index in range(total_page_no):
         page_index = index + 1
 
-        # data_list±£´æÎÄ¼şÃû(ÎÄ¼ş°´Ò³Âë´æ´¢£¬Ã¿Ò³PAGE_SIZEÌõ)
+        # data_listä¿å­˜æ–‡ä»¶å(æ–‡ä»¶æŒ‰é¡µç å­˜å‚¨ï¼Œæ¯é¡µPAGE_SIZEæ¡)
         data_list_filename = "data_list_%s_%s.json" % (data_type,page_index)
         data_list_filename = data_list_folder_name + data_list_filename
 
-        # ÁĞ±íÒ³url(´ÓÅäÖÃÎÄ¼ş¶ÁÈ¡)
+        # åˆ—è¡¨é¡µurl(ä»é…ç½®æ–‡ä»¶è¯»å–)
         data_list_url = cf.get("access_url" ,"data_list_url")
         data_list_url = data_list_url.format(data_type, page_index, page_size)
-        logging.debug("Êı¾İ²É¼¯µØÖ·:%s" % (data_list_url))
+        logging.debug("æ•°æ®é‡‡é›†åœ°å€:%s" % (data_list_url))
 
-        # Êı¾İ²É¼¯²¢±£´æµ½±¾µØ
+        # æ•°æ®é‡‡é›†å¹¶ä¿å­˜åˆ°æœ¬åœ°
         data_list_data = access_data_utils.get_data(data_list_url)
         file_utils.write_file(data_list_filename, data_list_data)
-        logging.debug("Ğ´ÈëÎÄ¼ş³É¹¦:%s" % (data_list_filename))
-        logging.info("µÚ%sÒ³Êı¾İ²É¼¯Íê³É,Ê£Óà%sÒ³,±£´æÂ·¾¶:%s" % (page_index,(total_page_no-page_index),data_list_filename))
+        logging.debug("å†™å…¥æ–‡ä»¶æˆåŠŸ:%s" % (data_list_filename))
+        logging.info("ç¬¬%sé¡µæ•°æ®é‡‡é›†å®Œæˆ,å‰©ä½™%sé¡µ,ä¿å­˜è·¯å¾„:%s" % (page_index,(total_page_no-page_index),data_list_filename))
         time.sleep(2)
     end_time = time.time()
-    logging.info("Êı¾İ²É¼¯½áÊøÊ±¼ä:%s"  % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-    logging.info("Êı¾İ²É¼¯¹²¼ÆºÄÊ±:%sÃë"  % (end_time - begin_time))
+    logging.info("æ•°æ®é‡‡é›†ç»“æŸæ—¶é—´:%s"  % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+    logging.info("æ•°æ®é‡‡é›†å…±è®¡è€—æ—¶:%sç§’"  % (end_time - begin_time))
 
 
 
@@ -74,9 +74,9 @@ def check_data(config_dict):
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_data_info_id(file_list)
     qsize = id_list.qsize()
-    logging.info("data_listÊı¾İÒÑ²É¼¯×ÜÁ¿=:%s" % (qsize))
+    logging.info("data_listæ•°æ®å·²é‡‡é›†æ€»é‡=:%s" % (qsize))
     total_count = comm_utils.get_curr_nmpa_total_count(data_type)
-    logging.info("µ±Ç°NMPA¹ÙÍøÊı¾İ×ÜÁ¿=:%s" % (total_count))
+    logging.info("å½“å‰NMPAå®˜ç½‘æ•°æ®æ€»é‡=:%s" % (total_count))
 
     if qsize == total_count:
         return True
@@ -87,56 +87,56 @@ def check_data(config_dict):
 
 def data_collection(config_dict):
     """
-    :param config_dict: ³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢
+    :param config_dict: ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯
     :return:
     """
-    #Êı¾İ¼ì²é
+    #æ•°æ®æ£€æŸ¥
     if check_data(config_dict):
-       logging.info("data_listÊı¾İ¼¯ÒÑ¾­Íê³É²É¼¯!")
+       logging.info("data_listæ•°æ®é›†å·²ç»å®Œæˆé‡‡é›†!")
     else:
-        #Êı¾İ²É¼¯
+        #æ•°æ®é‡‡é›†
         save_data_list_to_disk(config_dict)
 
 
-#³ÌĞòÔËĞĞÇ°Éú³ÉµÄ»ù´¡ÅäÖÃĞÅÏ¢
+#ç¨‹åºè¿è¡Œå‰ç”Ÿæˆçš„åŸºç¡€é…ç½®ä¿¡æ¯
 if __name__ == "__main__":
     # if len(sys.argv) <> 3:
-    #     print("ÔËĞĞ³ÌĞòĞèÒª2¸ö²ÎÊı get_type = {1,2} data_type = {25,26}")
-    #     print("ÔËĞĞÊ¾Àı:python data_list_collection.py 1 26")
+    #     print("è¿è¡Œç¨‹åºéœ€è¦2ä¸ªå‚æ•° get_type = {1,2} data_type = {25,26}")
+    #     print("è¿è¡Œç¤ºä¾‹:python data_list_collection.py 1 26")
     '''
     ======================================================
     :todo
-    get_type: Êı¾İ»ñÈ¡·½Ê½
-            1 urllib2·½Ê½
-            2 selenium·½Ê½
-    data_type:Êı¾İ²É¼¯ÀàĞÍ 
-            26 ¹ú²úÆ÷Ğµ  
-            27 ½ø¿ÚÆ÷Ğµ
-    root_path:ÎÄ¼ş´æ´¢Â·¾¶
+    get_type: æ•°æ®è·å–æ–¹å¼
+            1 urllib2æ–¹å¼
+            2 seleniumæ–¹å¼
+    data_type:æ•°æ®é‡‡é›†ç±»å‹ 
+            26 å›½äº§å™¨æ¢°  
+            27 è¿›å£å™¨æ¢°
+    root_path:æ–‡ä»¶å­˜å‚¨è·¯å¾„
     =====================================================
     # '''
-    #ÔËĞĞ³ÌĞò»ù´¡²ÎÊı
+    #è¿è¡Œç¨‹åºåŸºç¡€å‚æ•°
     config_filename = cf.get("default_config", "config_filename")
     log_name = cf.get("default_config", "log_name")
-    get_type = cf.get("base_config", "get_type")  # ¸Ã²ÎÊıÔİÊ±Î´ÉúĞ§,Î´À´¿ÉÄÜĞèÒªÊµÏÖ·½Ê½
+    get_type = cf.get("base_config", "get_type")  # è¯¥å‚æ•°æš‚æ—¶æœªç”Ÿæ•ˆ,æœªæ¥å¯èƒ½éœ€è¦å®ç°æ–¹å¼
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-    #0.µ±Ç°Êı¾İ²É¼¯´æ´¢Â·¾¶
+    #0.å½“å‰æ•°æ®é‡‡é›†å­˜å‚¨è·¯å¾„
     curr_date = file_utils.get_curr_date()
     curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
-    #1.¶ÁÈ¡ÅäÖÃĞÅÏ¢
+    #1.è¯»å–é…ç½®ä¿¡æ¯
     config_dict = None
     if not os.path.exists(curr_root_path + config_filename):
-        print("³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢:%s:Î´³õÊ¼»¯£¬ÇëÏÈÔËĞĞinit.py!" % (config_filename))
+        print("ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯:%s:æœªåˆå§‹åŒ–ï¼Œè¯·å…ˆè¿è¡Œinit.py!" % (config_filename))
         sys.exit(0)
     else:
         config_dict = config.get_config(root_path,data_type,curr_date)
 
-    #2.³õÊ¼»¯ÈÕÖ¾
+    #2.åˆå§‹åŒ–æ—¥å¿—
     log_utils.log_config(curr_root_path + log_name)
 
-    #3.¿ªÊ¼²É¼¯
+    #3.å¼€å§‹é‡‡é›†
     data_collection(config_dict)
 

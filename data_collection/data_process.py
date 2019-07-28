@@ -1,4 +1,4 @@
-#coding=gbk
+#coding=utf-8
 import os
 import sys
 sys.path.append('../')
@@ -7,23 +7,23 @@ import logging
 from utils import file_utils
 from utils import config
 from utils import log_utils
-# ¶ÁÈ¡»ù´¡ÅäÖÃÎÄ¼ş
+# è¯»å–åŸºç¡€é…ç½®æ–‡ä»¶
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 
 
 '''
 ==============
-Êı¾İ´¦ÀíÖ÷³ÌĞò
+æ•°æ®å¤„ç†ä¸»ç¨‹åº
 ==============
 '''
 ADD_DATA_FILENAME = "/add_data.json"
 REDUCE_DATA_FILENAME = "/reduce_data.json"
-#³ÌĞòÔËĞĞÇ°Éú³ÉµÄ»ù´¡ÅäÖÃĞÅÏ¢
+#ç¨‹åºè¿è¡Œå‰ç”Ÿæˆçš„åŸºç¡€é…ç½®ä¿¡æ¯
 CONFIG_FILENAME =  "config.ini"
 def data_process(config_dict):
     """
-    ±¾´Î²É¼¯Êı¾İÓëµ±Ç°Êı¾İ¿â¶Ô±È£¬½«ĞÂÔö¡¢¼õÉÙÊı¾İ´æÈëadd¡¢reductÎÄ¼ş¼Ğ
+    æœ¬æ¬¡é‡‡é›†æ•°æ®ä¸å½“å‰æ•°æ®åº“å¯¹æ¯”ï¼Œå°†æ–°å¢ã€å‡å°‘æ•°æ®å­˜å…¥addã€reductæ–‡ä»¶å¤¹
     :param config_dict:
     :return:
     """
@@ -32,58 +32,58 @@ def data_process(config_dict):
     data_list_folder_name = config_dict["data_list_folder_name"]
 
     if  os.path.exists(add_filename):
-        logging.info("Êı¾İ·ÖÎö:±¾´ÎĞÂÔö¼õÉÙ[add/reduct]ÎÄ¼şÒÑ¾­´æ´¢:%s" % (add_filename))
+        logging.info("æ•°æ®åˆ†æ:æœ¬æ¬¡æ–°å¢å‡å°‘[add/reduct]æ–‡ä»¶å·²ç»å­˜å‚¨:%s" % (add_filename))
         return
 
     last_data_list_folder_name  = config.get_last_root_path(root_path,data_type)
     file_list = file_utils.get_file_list(last_data_list_folder_name +  "/data_list/")
     id_list = file_utils.get_data_info_id(file_list)
     curr_data_id_list =  list(id_list.queue)
-    logging.info("Êı¾İ·ÖÎö:ÉÏÒ»Ìì[%s]Êı¾İ²É¼¯ÊıÁ¿: %s" %  (file_utils.get_last_date(),len(curr_data_id_list)))
+    logging.info("æ•°æ®åˆ†æ:ä¸Šä¸€å¤©[%s]æ•°æ®é‡‡é›†æ•°é‡: %s" %  (file_utils.get_last_date(),len(curr_data_id_list)))
 
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_data_info_id(file_list)
     new_data_id_list = list(id_list.queue)
-    logging.info("Êı¾İ·ÖÎö:½ñÌì[%s]Êı¾İ²É¼¯ÊıÁ¿: %s" % (file_utils.get_curr_date(),len(new_data_id_list)))
+    logging.info("æ•°æ®åˆ†æ:ä»Šå¤©[%s]æ•°æ®é‡‡é›†æ•°é‡: %s" % (file_utils.get_curr_date(),len(new_data_id_list)))
 
-    # ±¾´ÎĞÂÔöÊı¾İ
-    add_data= list(set(new_data_id_list).difference(set(curr_data_id_list)))  # bÖĞÓĞ¶øaÖĞÃ»ÓĞµÄ
+    # æœ¬æ¬¡æ–°å¢æ•°æ®
+    add_data= list(set(new_data_id_list).difference(set(curr_data_id_list)))  # bä¸­æœ‰è€Œaä¸­æ²¡æœ‰çš„
     file_utils.write_file(add_filename,str(add_data))
-    logging.info("Êı¾İ·ÖÎö:±¾´ÎĞÂÔöÊı¾İ:%s" % (len(add_data)))
+    logging.info("æ•°æ®åˆ†æ:æœ¬æ¬¡æ–°å¢æ•°æ®:%s" % (len(add_data)))
 
-    # ±¾´Î¼õÉÙÊı¾İ
-    reduce_data =  list(set(curr_data_id_list).difference(set(new_data_id_list)))  # aÖĞÓĞ¶øbÖĞÃ»ÓĞµÄ
+    # æœ¬æ¬¡å‡å°‘æ•°æ®
+    reduce_data =  list(set(curr_data_id_list).difference(set(new_data_id_list)))  # aä¸­æœ‰è€Œbä¸­æ²¡æœ‰çš„
     file_utils.write_file(reduce_filename, str(reduce_data))
-    logging.info("Êı¾İ·ÖÎö:±¾´Î¼õÉÙÊı¾İ:%s" %(len(reduce_data)))
+    logging.info("æ•°æ®åˆ†æ:æœ¬æ¬¡å‡å°‘æ•°æ®:%s" %(len(reduce_data)))
 
 
 
 
 if __name__ == "__main__":
 
-    # ÔËĞĞ³ÌĞò»ù´¡²ÎÊı
+    # è¿è¡Œç¨‹åºåŸºç¡€å‚æ•°
     config_filename = cf.get("default_config", "config_filename")
     log_name = cf.get("default_config", "log_name")
-    get_type = cf.get("base_config", "get_type")  # ¸Ã²ÎÊıÔİÊ±Î´ÉúĞ§,Î´À´¿ÉÄÜĞèÒªÊµÏÖ·½Ê½
+    get_type = cf.get("base_config", "get_type")  # è¯¥å‚æ•°æš‚æ—¶æœªç”Ÿæ•ˆ,æœªæ¥å¯èƒ½éœ€è¦å®ç°æ–¹å¼
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-    #0.µ±Ç°Êı¾İ²É¼¯´æ´¢Â·¾¶
+    #0.å½“å‰æ•°æ®é‡‡é›†å­˜å‚¨è·¯å¾„
     curr_date = file_utils.get_curr_date()
     curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
-    #1.¶ÁÈ¡ÅäÖÃĞÅÏ¢
+    #1.è¯»å–é…ç½®ä¿¡æ¯
     config_dict = None
     if not os.path.exists(curr_root_path + config_filename):
-        print("³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢:%s:Î´³õÊ¼»¯£¬ÇëÏÈÔËĞĞinit.py!" % (config_filename))
+        print("ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯:%s:æœªåˆå§‹åŒ–ï¼Œè¯·å…ˆè¿è¡Œinit.py!" % (config_filename))
         sys.exit(0)
     else:
         config_dict = config.get_config(root_path,data_type,curr_date)
 
-    # 2.³õÊ¼»¯ÈÕÖ¾
+    # 2.åˆå§‹åŒ–æ—¥å¿—
     log_utils.log_config(curr_root_path + log_name)
 
-    #3. Êı¾İ·ÖÎö3
+    #3. æ•°æ®åˆ†æ3
     data_process(config_dict)
 
 

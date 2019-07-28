@@ -1,19 +1,19 @@
-#coding=gbk
+#coding=utf-8
 import os
 import ast
 from utils import file_utils
 from utils import log_utils
 import logging
 
-#³ÌĞòÔËĞĞÇ°Éú³ÉµÄ»ù´¡ÅäÖÃĞÅÏ¢
+#ç¨‹åºè¿è¡Œå‰ç”Ÿæˆçš„åŸºç¡€é…ç½®ä¿¡æ¯
 CONFIG_FILENAME =  "config.ini"
 
-#ÈÕÖ¾ÎÄ¼ş
+#æ—¥å¿—æ–‡ä»¶
 LOG_NAME = "data_collection.log"
 
 def get_config(root_path = str,data_type=int,curr_date=str):
     """
-    °´Ö¸¶¨ÈÕÆÚ·µ»Ø³ÌĞòÔËĞĞÅäÖÃÎÄ¼ş
+    æŒ‰æŒ‡å®šæ—¥æœŸè¿”å›ç¨‹åºè¿è¡Œé…ç½®æ–‡ä»¶
     :param root_path:
     :param data_type:
     :param curr_date:
@@ -21,7 +21,7 @@ def get_config(root_path = str,data_type=int,curr_date=str):
     """
     config_filename = get_curr_root_path(root_path,data_type,curr_date) + CONFIG_FILENAME
     if not os.path.exists(config_filename):
-        logging.error("Ö¸¶¨ÈÕÆÚ=%s,²»´æÔÚÅäÖÃĞÅÏ¢!" % (curr_date))
+        logging.error("æŒ‡å®šæ—¥æœŸ=%s,ä¸å­˜åœ¨é…ç½®ä¿¡æ¯!" % (curr_date))
         return False
 
     with open(config_filename, "r") as f:
@@ -31,42 +31,42 @@ def get_config(root_path = str,data_type=int,curr_date=str):
 
 def init_config(root_path,data_type,get_type):
     """
-    ³õÊ¼»¯³ÌĞòÔËĞĞÇ°»ù´¡ÅäÖÃĞÅÏ¢
-    :todo ºóĞøÊµÏÖ²ÎÊıĞ£Ñé
-    :param root_path: ÎÄ¼ş´æ´¢¸ùÂ·¾¶
-    :param data_type: Êı¾İ²É¼¯ÀàĞÍ  26 ¹ú²úÆ÷Ğµ  27 ½ø¿ÚÆ÷Ğµ
-    :param get_type:  Êı¾İ»ñÈ¡·½Ê½ 1 urllib2·½Ê½ 2 selenium·½Ê½
+    åˆå§‹åŒ–ç¨‹åºè¿è¡Œå‰åŸºç¡€é…ç½®ä¿¡æ¯
+    :todo åç»­å®ç°å‚æ•°æ ¡éªŒ
+    :param root_path: æ–‡ä»¶å­˜å‚¨æ ¹è·¯å¾„
+    :param data_type: æ•°æ®é‡‡é›†ç±»å‹  26 å›½äº§å™¨æ¢°  27 è¿›å£å™¨æ¢°
+    :param get_type:  æ•°æ®è·å–æ–¹å¼ 1 urllib2æ–¹å¼ 2 seleniumæ–¹å¼
     :return:
     """
     curr_date = file_utils.get_curr_date()
     curr_root_path = get_curr_root_path(root_path, data_type,curr_date)
 
-    #ÈÕÖ¾³õÊ¼»¯ÅäÖÃ
+    #æ—¥å¿—åˆå§‹åŒ–é…ç½®
     log_foloder_name =  curr_root_path  + "/logs/"
     file_utils.mkdir_path(log_foloder_name)
     log_utils.log_config(log_foloder_name + LOG_NAME)
 
-    # µ±Ç°Êı¾İ´æ´¢¸ùÂ·¾¶(¶¨Ê±Ö´ĞĞ£¬ °´ÈÕÆÚ´æ·Å)
+    # å½“å‰æ•°æ®å­˜å‚¨æ ¹è·¯å¾„(å®šæ—¶æ‰§è¡Œï¼Œ æŒ‰æ—¥æœŸå­˜æ”¾)
     if os.path.exists(curr_root_path + CONFIG_FILENAME):
-        print("±¾´ÎÊı¾İ²É¼¯[³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢:%s]:ÒÑ¾­³õÊ¼Íê³É!" % (CONFIG_FILENAME))
+        print("æœ¬æ¬¡æ•°æ®é‡‡é›†[ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯:%s]:å·²ç»åˆå§‹å®Œæˆ!" % (CONFIG_FILENAME))
         return False
 
-    # ³õÊ¼Êı¾İ´æ´¢Â·¾¶
+    # åˆå§‹æ•°æ®å­˜å‚¨è·¯å¾„
     data_list_folder_name = curr_root_path + "/data_list/"
     data_info_folder_name = curr_root_path + "/data_info/"
     add_folder_name = data_info_folder_name + "/add/"
     reduct_folder_name = data_info_folder_name + "/reduct/"
     data_info_save_folder_name = data_info_folder_name + "/save/"
 
-    # ´´½¨list¡¢infoÎÄ¼ş¼Ğ
+    # åˆ›å»ºlistã€infoæ–‡ä»¶å¤¹
     file_utils.mkdir_path(data_list_folder_name)
     file_utils.mkdir_path(data_info_folder_name)
 
-    # ´´½¨data_info > add ¡¢reduct ÎÄ¼ş¼Ğ
+    # åˆ›å»ºdata_info > add ã€reduct æ–‡ä»¶å¤¹
     file_utils.mkdir_path(add_folder_name)
     file_utils.mkdir_path(reduct_folder_name)
 
-    # ´´½¨saveÎÄ¼ş¼Ğ(×îÖÕ»áÈë¿âµÄĞÅÏ¢)
+    # åˆ›å»ºsaveæ–‡ä»¶å¤¹(æœ€ç»ˆä¼šå…¥åº“çš„ä¿¡æ¯)
     file_utils.mkdir_path(data_info_save_folder_name)
 
     config_dict = {'data_type':data_type,
@@ -82,14 +82,14 @@ def init_config(root_path,data_type,get_type):
     config_filename = curr_root_path + "/" + CONFIG_FILENAME
     file_utils.write_file(config_filename, str(config_dict))
 
-    logging.info("³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢³õÊ¼»¯Íê³É:%s" % (config_filename))
+    logging.info("ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯åˆå§‹åŒ–å®Œæˆ:%s" % (config_filename))
     logging.debug(str(config_dict))
 
 def get_last_root_path(root_path,data_type):
     """
-    »ñÈ¡µ±Ç°Ö´ĞĞ¸ùÂ·¾¶: µ±Ç°Â·¾¶ = ÅäÖÃ¸ùÂ·¾¶ + µ±Ç°Êı¾İÀàĞÍ(data_type)  + µ±Ç°ÈÕÆÚ
-    :param root_path:ÅäÖÃ¸ùÂ·¾¶
-    :param data_type:Êı¾İÀàĞÍ
+    è·å–å½“å‰æ‰§è¡Œæ ¹è·¯å¾„: å½“å‰è·¯å¾„ = é…ç½®æ ¹è·¯å¾„ + å½“å‰æ•°æ®ç±»å‹(data_type)  + å½“å‰æ—¥æœŸ
+    :param root_path:é…ç½®æ ¹è·¯å¾„
+    :param data_type:æ•°æ®ç±»å‹
     :return:
     """
     last_date = file_utils.get_last_date()
@@ -99,10 +99,10 @@ def get_last_root_path(root_path,data_type):
 
 def get_curr_root_path(root_path,data_type,curr_date):
     """
-    »ñÈ¡µ±Ç°Ö´ĞĞ¸ùÂ·¾¶: µ±Ç°Â·¾¶ = ÅäÖÃ¸ùÂ·¾¶ + µ±Ç°Êı¾İÀàĞÍ(data_type)  + µ±Ç°ÈÕÆÚ
-    :param root_path:ÅäÖÃ¸ùÂ·¾¶
-    :param data_type:Êı¾İÀàĞÍ
-    :param curr_date:¿ÉÖ¸¶¨ÈÕÆÚ(¸ñÊ½£ºyyyymm)£¬µ±ÎªNoneÊ±£¬Éú³Éµ±Ç°ÈÕÆÚ
+    è·å–å½“å‰æ‰§è¡Œæ ¹è·¯å¾„: å½“å‰è·¯å¾„ = é…ç½®æ ¹è·¯å¾„ + å½“å‰æ•°æ®ç±»å‹(data_type)  + å½“å‰æ—¥æœŸ
+    :param root_path:é…ç½®æ ¹è·¯å¾„
+    :param data_type:æ•°æ®ç±»å‹
+    :param curr_date:å¯æŒ‡å®šæ—¥æœŸ(æ ¼å¼ï¼šyyyymm)ï¼Œå½“ä¸ºNoneæ—¶ï¼Œç”Ÿæˆå½“å‰æ—¥æœŸ
     :return:
     """
     if  curr_date is None:

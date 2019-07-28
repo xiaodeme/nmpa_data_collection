@@ -1,23 +1,23 @@
-#coding=gbk
+#coding=utf-8
 from utils import etc_utils
 from utils import access_data_utils
 import json
 import  ConfigParser
 import platform
-# 读取配置文件
+# 璇诲彇閰嶇疆鏂囦欢
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 '''
-获取NMPA官网当前数据总量
+鑾峰彇NMPA瀹樼綉褰撳墠鏁版嵁鎬婚噺
 '''
 def get_curr_nmpa_total_count(data_type):
 
-    #访问url
+    #璁块棶url
     data_list_url = cf.get("access_url", "data_list_url")
     data_list_url = data_list_url.format(data_type, 1, 1)
     # print data_list_url
 
-    #数据采集
+    #鏁版嵁閲囬泦
     data_list_data = access_data_utils.get_data(data_list_url)
     jsonData = json.loads(data_list_data)
 
@@ -31,7 +31,7 @@ def is_windows():
 if __name__ == "__main__":
 
     data_type = cf.get("base_config","data_type")
-    # print("当前NMPA官网data_type = %s,数据总量:%s" % (data_type,get_curr_nmpa_total_count(data_type)))
+    # print("褰撳墠NMPA瀹樼綉data_type = %s,鏁版嵁鎬婚噺:%s" % (data_type,get_curr_nmpa_total_count(data_type)))
     print is_windows()
 
     pass

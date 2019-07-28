@@ -1,4 +1,4 @@
-#coding=gbk
+#coding=utf-8
 import sys
 import os
 sys.path.append('../')
@@ -11,42 +11,42 @@ from db_manager import  dbManager
 from utils import config
 from utils import log_utils
 from utils import  comm_utils
-# ¶ÁÈ¡»ù´¡ÅäÖÃÎÄ¼ş
+# è¯»å–åŸºç¡€é…ç½®æ–‡ä»¶
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 
-#³ÌĞòÔËĞĞÇ°Éú³ÉµÄ»ù´¡ÅäÖÃĞÅÏ¢
+#ç¨‹åºè¿è¡Œå‰ç”Ÿæˆçš„åŸºç¡€é…ç½®ä¿¡æ¯
 CONFIG_FILENAME =  "config.ini"
 
-#ÈÕÖ¾ÎÄ¼ş
+#æ—¥å¿—æ–‡ä»¶
 LOG_NAME = "data_collection.log"
 
 def check_data(curr_date):
-    get_type = cf.get("base_config", "get_type")  # ¸Ã²ÎÊıÔİÊ±Î´ÉúĞ§
+    get_type = cf.get("base_config", "get_type")  # è¯¥å‚æ•°æš‚æ—¶æœªç”Ÿæ•ˆ
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
     config_dict = config.get_config(root_path, data_type, curr_date)
 
-    # ÈÕÖ¾³õÊ¼»¯ÅäÖÃ
+    # æ—¥å¿—åˆå§‹åŒ–é…ç½®
     log_filename = config.get_curr_root_path(root_path, data_type, curr_date) + "/logs/" + LOG_NAME
     log_utils.log_config(log_filename)
 
-    # 3. »ñÈ¡´ıĞÂÔöµÄÊı¾İ
+    # 3. è·å–å¾…æ–°å¢çš„æ•°æ®
     add_folder_name = config_dict["add_folder_name"]
     add_filename = add_folder_name + "add_data.json"
     ADD_DATA_LIST = file_utils.get_add_data_id(add_filename)
     add_data_count = ADD_DATA_LIST.qsize()
-    logging.info("[data_info]²É¼¯ÈÕÆÚ=%s,¼Æ»®ĞÂÔöÊı¾İ²É¼¯Êı¾İ×ÜÁ¿=:%s" % (curr_date, add_data_count))
+    logging.info("[data_info]é‡‡é›†æ—¥æœŸ=%s,è®¡åˆ’æ–°å¢æ•°æ®é‡‡é›†æ•°æ®æ€»é‡=:%s" % (curr_date, add_data_count))
 
-    # data_info > save Êı¾İ²É¼¯×ÜÁ¿¼ì²é
+    # data_info > save æ•°æ®é‡‡é›†æ€»é‡æ£€æŸ¥
     data_info_save_folder_name = config_dict["data_info_save_folder_name"]
     file_list = file_utils.get_file_list(data_info_save_folder_name)
     data_info_count = file_utils.data_info_count(file_list)
-    logging.info("[data_info]²É¼¯ÈÕÆÚ=%s,Êµ¼ÊĞÂÔöÊı¾İ²É¼¯Êı¾İ×ÜÁ¿=:%s" % (curr_date, data_info_count))
+    logging.info("[data_info]é‡‡é›†æ—¥æœŸ=%s,å®é™…æ–°å¢æ•°æ®é‡‡é›†æ•°æ®æ€»é‡=:%s" % (curr_date, data_info_count))
 
 if __name__ == "__main__":
     """
-        ÓÃÓÚ²é¿´Í³¼Æµ±Ç°Êı¾İĞÂÔö²É¼¯Çé¿ö
+        ç”¨äºæŸ¥çœ‹ç»Ÿè®¡å½“å‰æ•°æ®æ–°å¢é‡‡é›†æƒ…å†µ
     """
     curr_date = file_utils.get_curr_date()
     check_data(curr_date)

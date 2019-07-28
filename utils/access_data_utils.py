@@ -1,9 +1,9 @@
-#coding=gbk
+#coding=utf-8
 
 import urllib2
 
 '''
-抓取数据方法
+鎶撳彇鏁版嵁鏂规硶
 '''
 def get_data(url):
     html = urllib2.urlopen(url).read()

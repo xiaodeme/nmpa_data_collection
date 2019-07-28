@@ -1,4 +1,4 @@
-#coding=gbk
+#coding=utf-8
 import urllib2
 import time
 import threading
@@ -16,62 +16,62 @@ from utils import config
 #
 # '''
 # ==============
-# Êı¾İ²É¼¯Ö÷³ÌĞò:°´id²É¼¯×¢²á²úÆ·ÏêÏ¸ĞÅÏ¢
+# æ•°æ®é‡‡é›†ä¸»ç¨‹åº:æŒ‰idé‡‡é›†æ³¨å†Œäº§å“è¯¦ç»†ä¿¡æ¯
 # ==============
 # '''
-# ¶ÁÈ¡ÅäÖÃÎÄ¼ş
+# è¯»å–é…ç½®æ–‡ä»¶
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 
 def start(threadCount,config_dict):
-    # Æô¶¯x¸öÏß³Ì£¬½¨ÒéĞ¡ÓÚ10¸ö
+    # å¯åŠ¨xä¸ªçº¿ç¨‹ï¼Œå»ºè®®å°äº10ä¸ª
     threads = []
     for i in range(threadCount):
-        # Çø·ÖÆäËûÏß³ÌÃû×Ö
+        # åŒºåˆ†å…¶ä»–çº¿ç¨‹åå­—
         thread = myThread(i,config_dict)
-        # Ìí¼ÓÏß³Ìµ½Ïß³ÌÁĞ±í
+        # æ·»åŠ çº¿ç¨‹åˆ°çº¿ç¨‹åˆ—è¡¨
         threads.append(thread)
 
     for t in threads:
         t.start()
 
-    # # µÈ´ıËùÓĞÏß³ÌÍê³É
+    # # ç­‰å¾…æ‰€æœ‰çº¿ç¨‹å®Œæˆ
     for t in threads:
         if t.isAlive():
             t.join()
-    logging.info("ËùÓĞÏß³ÌÈ«²¿½áÊø!")
+    logging.info("æ‰€æœ‰çº¿ç¨‹å…¨éƒ¨ç»“æŸ!")
 
 
 def get_data_info(thread_name,config_dict):
-    #ĞÂÔöÊı¾İ±£´æÂ·¾¶
+    #æ–°å¢æ•°æ®ä¿å­˜è·¯å¾„
     data_info_save_folder_name = config_dict["data_info_save_folder_name"]
     while not ADD_DATA_LIST.empty():
         try:
             data_id = ADD_DATA_LIST.get()
-            info = "Ïß³ÌÃû:%s,Ã»ÓĞ»ñÈ¡µ½Êı¾İ»¹ÓĞ %d¸ö" % (thread_name,ADD_DATA_LIST.qsize())
+            info = "çº¿ç¨‹å:%s,æ²¡æœ‰è·å–åˆ°æ•°æ®è¿˜æœ‰ %dä¸ª" % (thread_name,ADD_DATA_LIST.qsize())
             logging.info(info)
 
-            # data_info±£´æÎÄ¼şÃû
+            # data_infoä¿å­˜æ–‡ä»¶å
             save_filename = "data_info_thread_%s.json" % (thread_name)
             save_filename = data_info_save_folder_name + save_filename
 
-            # ÁĞ±íÏêÇéÒ³url
+            # åˆ—è¡¨è¯¦æƒ…é¡µurl
             data_info_url = cf.get("access_url" ,"data_info_url")
             data_info_url = data_info_url.format(config_dict["data_type"], data_id)
 
-            # Êı¾İ²É¼¯²¢±£´æµ½±¾µØ
+            # æ•°æ®é‡‡é›†å¹¶ä¿å­˜åˆ°æœ¬åœ°
             data_info_data = access_data_utils.get_data(data_info_url)
             data_info_data = data_info_data.replace("\\n\\r", "").decode("gbk").encode("utf-8")
 
-            #½«Êı¾İ±êÊ¶ºÍÊı¾İÒ»Æğ´æ´¢
+            #å°†æ•°æ®æ ‡è¯†å’Œæ•°æ®ä¸€èµ·å­˜å‚¨
             data = str(data_id) + "==" + data_info_data
             with open(save_filename, 'a') as f:
                 f.writelines(data + "\n")
 
-            info = save_filename + "Ğ´Èë³É¹¦! id: " + str(data_id)
+            info = save_filename + "å†™å…¥æˆåŠŸ! id: " + str(data_id)
             logging.debug(info)
 
-            # ĞİÃß1Ãë£¬·ÀÖ¹·şÎñÆ÷ÅĞ¶ÏÎª¹¥»÷
+            # ä¼‘çœ 1ç§’ï¼Œé˜²æ­¢æœåŠ¡å™¨åˆ¤æ–­ä¸ºæ”»å‡»
             time.sleep(2)
         except urllib2.URLError as e:
             ADD_DATA_LIST.put(data_id)
@@ -83,12 +83,12 @@ def get_data_info(thread_name,config_dict):
             logging.error("UnboundLocalError")
             logging.error(e.message)
 
-class myThread(threading.Thread):  # ¼Ì³Ğ¸¸Ààthreading.Thread
+class myThread(threading.Thread):  # ç»§æ‰¿çˆ¶ç±»threading.Thread
     def __init__(self, name,config_dict=dict):
         threading.Thread.__init__(self)
         self.name = name
         self.config_dict = config_dict
-    def run(self):  # °ÑÒªÖ´ĞĞµÄ´úÂëĞ´µ½runº¯ÊıÀïÃæ Ïß³ÌÔÚ´´½¨ºó»áÖ±½ÓÔËĞĞrunº¯Êı
+    def run(self):  # æŠŠè¦æ‰§è¡Œçš„ä»£ç å†™åˆ°runå‡½æ•°é‡Œé¢ çº¿ç¨‹åœ¨åˆ›å»ºåä¼šç›´æ¥è¿è¡Œrunå‡½æ•°
         msg1 = "====Starting " + self.name
         logging.info(msg1)
         get_data_info(self.name,self.config_dict)
@@ -96,53 +96,53 @@ class myThread(threading.Thread):  # ¼Ì³Ğ¸¸Ààthreading.Thread
         logging.info(msg2)
 
     def stop(self):
-        self.__flag.set()       # ½«Ïß³Ì´ÓÔİÍ£×´Ì¬»Ö¸´, ÈçºÎÒÑ¾­ÔİÍ£µÄ»°
-        self.__running.clear()  # ÉèÖÃÎªFalse
+        self.__flag.set()       # å°†çº¿ç¨‹ä»æš‚åœçŠ¶æ€æ¢å¤, å¦‚ä½•å·²ç»æš‚åœçš„è¯
+        self.__running.clear()  # è®¾ç½®ä¸ºFalse
 
 
 
 if __name__ == "__main__":
-    # ÔËĞĞ³ÌĞò»ù´¡²ÎÊı
+    # è¿è¡Œç¨‹åºåŸºç¡€å‚æ•°
     config_filename = cf.get("default_config", "config_filename")
     log_name = cf.get("default_config", "log_name")
-    get_type = cf.get("base_config", "get_type")  # ¸Ã²ÎÊıÔİÊ±Î´ÉúĞ§,Î´À´¿ÉÄÜĞèÒªÊµÏÖ·½Ê½
+    get_type = cf.get("base_config", "get_type")  # è¯¥å‚æ•°æš‚æ—¶æœªç”Ÿæ•ˆ,æœªæ¥å¯èƒ½éœ€è¦å®ç°æ–¹å¼
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-    # 0.µ±Ç°Êı¾İ²É¼¯´æ´¢Â·¾¶
+    # 0.å½“å‰æ•°æ®é‡‡é›†å­˜å‚¨è·¯å¾„
     curr_date = file_utils.get_curr_date()
     curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
-    # 1.¶ÁÈ¡ÅäÖÃĞÅÏ¢
+    # 1.è¯»å–é…ç½®ä¿¡æ¯
     config_dict = None
     if not os.path.exists(curr_root_path + config_filename):
-        print("³ÌĞòÔËĞĞ»ù´¡ÅäÖÃĞÅÏ¢:%s:Î´³õÊ¼»¯£¬ÇëÏÈÔËĞĞinit.py!" % (config_filename))
+        print("ç¨‹åºè¿è¡ŒåŸºç¡€é…ç½®ä¿¡æ¯:%s:æœªåˆå§‹åŒ–ï¼Œè¯·å…ˆè¿è¡Œinit.py!" % (config_filename))
         sys.exit(0)
     else:
         config_dict = config.get_config(root_path, data_type, curr_date)
 
-    # 2.³õÊ¼»¯ÈÕÖ¾
+    # 2.åˆå§‹åŒ–æ—¥å¿—
     log_utils.log_config(curr_root_path + log_name)
 
 
-    #3. »ñÈ¡´ıĞÂÔöµÄÊı¾İ
+    #3. è·å–å¾…æ–°å¢çš„æ•°æ®
     add_folder_name = config_dict["add_folder_name"]
     add_filename = add_folder_name + "add_data.json"
     ADD_DATA_LIST = file_utils.get_add_data_id(add_filename)
     add_data_count  = ADD_DATA_LIST.qsize()
-    logging.info("[data_info]²É¼¯ÈÕÆÚ=%s,¼Æ»®ĞÂÔöÊı¾İ²É¼¯Êı¾İ×ÜÁ¿=:%s" % (curr_date, add_data_count))
+    logging.info("[data_info]é‡‡é›†æ—¥æœŸ=%s,è®¡åˆ’æ–°å¢æ•°æ®é‡‡é›†æ•°æ®æ€»é‡=:%s" % (curr_date, add_data_count))
 
-    # data_info > save Êı¾İ²É¼¯×ÜÁ¿¼ì²é
+    # data_info > save æ•°æ®é‡‡é›†æ€»é‡æ£€æŸ¥
     data_info_save_folder_name = config_dict["data_info_save_folder_name"]
     file_list = file_utils.get_file_list(data_info_save_folder_name)
     data_info_count = file_utils.data_info_count(file_list)
-    logging.info("[data_info]²É¼¯ÈÕÆÚ=%s,Êµ¼ÊĞÂÔöÊı¾İ²É¼¯Êı¾İ×ÜÁ¿=:%s" % (curr_date, data_info_count))
+    logging.info("[data_info]é‡‡é›†æ—¥æœŸ=%s,å®é™…æ–°å¢æ•°æ®é‡‡é›†æ•°æ®æ€»é‡=:%s" % (curr_date, data_info_count))
 
     if add_data_count == data_info_count:
-        logging.info("²É¼¯ÈÕÆÚ=%s,ĞÂÔöÊı¾İ²É¼¯ÒÑ¾­Íê³É!" %(curr_date))
+        logging.info("é‡‡é›†æ—¥æœŸ=%s,æ–°å¢æ•°æ®é‡‡é›†å·²ç»å®Œæˆ!" %(curr_date))
         sys.exit(0)
     else:
         data_info_save_folder_name = config_dict["data_info_save_folder_name"]
         if file_utils.clear_folder(data_info_save_folder_name):
-            logging.info("Çå¿ÕÎÄ¼ş¼ĞÎÄ¼ş:%s" % (data_info_save_folder_name))
+            logging.info("æ¸…ç©ºæ–‡ä»¶å¤¹æ–‡ä»¶:%s" % (data_info_save_folder_name))
         start(10,config_dict)

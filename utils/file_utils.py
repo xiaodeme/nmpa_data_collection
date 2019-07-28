@@ -1,4 +1,4 @@
-#coding=gbk
+#coding=utf-8
 import os
 import  Queue
 import json
@@ -13,27 +13,27 @@ def clear_folder(forder_name):
     return True
 
 '''
-fn£ºĞ´ÈëÎÄ¼ş
-file_name:ÎÄ¼şÈ«Â·¾¶
-data:ÎÄ¼şÄÚÈİ
+fnï¼šå†™å…¥æ–‡ä»¶
+file_name:æ–‡ä»¶å…¨è·¯å¾„
+data:æ–‡ä»¶å†…å®¹
 '''
 def write_file(file_name,data):
     with open(file_name , 'a') as f:
           f.writelines(data+"\n")
 '''
-´´½¨ÎÄ¼ş¼Ğ
+åˆ›å»ºæ–‡ä»¶å¤¹
 '''
 def mkdir_path(foder_path):
     if  not os.path.exists(foder_path):
         os.makedirs(foder_path)
-        print("ÎÄ¼ş¼Ğ´´½¨³É¹¦£º%s" %(foder_path))
+        print("æ–‡ä»¶å¤¹åˆ›å»ºæˆåŠŸï¼š%s" %(foder_path))
     else:
-        print("ÎÄ¼ş¼Ğ£º%s ÒÑ¾­´æÔÚ£¬²»»áÔÙ´´½¨!" % (foder_path))
+        print("æ–‡ä»¶å¤¹ï¼š%s å·²ç»å­˜åœ¨ï¼Œä¸ä¼šå†åˆ›å»º!" % (foder_path))
 
 
 '''
-»ñÈ¡ĞÂÔöÊı¾İ±êÊ¶¼¯ºÏ
-proccess.py´¦Àíºó´æÔÚ
+è·å–æ–°å¢æ•°æ®æ ‡è¯†é›†åˆ
+proccess.pyå¤„ç†åå­˜åœ¨
 '''
 def get_add_data_id(file_name):
     id_list = Queue.Queue()
@@ -45,7 +45,7 @@ def get_add_data_id(file_name):
 
 def data_info_count(file_list):
     """
-    »ñÈ¡ÎÄ¼ş¼ĞµÄÎÄ¼şÒ»¹²ÓĞ¶àÉÙĞĞ
+    è·å–æ–‡ä»¶å¤¹çš„æ–‡ä»¶ä¸€å…±æœ‰å¤šå°‘è¡Œ
     :param file_list:
     :return:
     """
@@ -58,7 +58,7 @@ def data_info_count(file_list):
 
 
 '''
-»ñÈ¡ËùÓĞÏêÏ¸ĞÅÏ¢±êÊ¶¼¯ºÏ
+è·å–æ‰€æœ‰è¯¦ç»†ä¿¡æ¯æ ‡è¯†é›†åˆ
 '''
 def get_data_info_id(file_list):
     id_list = Queue.Queue()
@@ -70,7 +70,7 @@ def get_data_info_id(file_list):
     return id_list
 
 '''
-»ñÈ¡ÎÄ¼şÂ·¾¶¼¯ºÏ
+è·å–æ–‡ä»¶è·¯å¾„é›†åˆ
 '''
 def get_file_list(file_dir):
     L=[]
@@ -82,7 +82,7 @@ def get_file_list(file_dir):
 
 
 '''
-»ñÈ¡µ±Ç°Êı¾İ²É¼¯×î´óÒ³ÂëÊı
+è·å–å½“å‰æ•°æ®é‡‡é›†æœ€å¤§é¡µç æ•°
 '''
 def get_curr_max_pageno(file_dir):
     L=[]
@@ -113,5 +113,5 @@ if __name__ == "__main__":
     #     print add_data_id.empty()
     #
     # else:
-    #     print "add_data.jsonÎÄ¼ş²»´æÔÚ£¬ÇëÔËĞĞdata_process.py³ÌĞò´¦Àí"
+    #     print "add_data.jsonæ–‡ä»¶ä¸å­˜åœ¨ï¼Œè¯·è¿è¡Œdata_process.pyç¨‹åºå¤„ç†"
     pass
