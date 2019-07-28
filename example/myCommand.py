@@ -1,5 +1,5 @@
 #/usr/bin/python
-#coding=utf-8
+#coding=gbk
 import time
 
 file_name = "/home/txwebadmin/workspace/python/my.log"

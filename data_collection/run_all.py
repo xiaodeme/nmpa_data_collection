@@ -1,32 +1,33 @@
-#coding=utf-8
+#coding=gbk
 import os
 import sys
+sys.path.append('../')
 from utils import  file_utils
 from utils import config
-sys.path.append('../')
 import ConfigParser
-
-# è¯»å–åŸºç¡€é…ç½®æ–‡ä»¶
+import logging
+# ¶ÁÈ¡»ù´¡ÅäÖÃÎÄ¼ş
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 if __name__ == "__main__":
 
-    # è¿è¡Œç¨‹åºåŸºç¡€å‚æ•°
+    # ÔËĞĞ³ÌĞò»ù´¡²ÎÊı
     config_filename = cf.get("default_config", "config_filename")
     log_name = cf.get("default_config", "log_name")
-    get_type = cf.get("base_config", "get_type")  # è¯¥å‚æ•°æš‚æ—¶æœªç”Ÿæ•ˆ,æœªæ¥å¯èƒ½éœ€è¦å®ç°æ–¹å¼
+    get_type = cf.get("base_config", "get_type")  # ¸Ã²ÎÊıÔİÊ±Î´ÉúĞ§,Î´À´¿ÉÄÜĞèÒªÊµÏÖ·½Ê½
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
     curr_date = file_utils.get_curr_date()
+    # curr_date = "20190727"
     curr_root_path = config.get_curr_root_path(root_path, data_type, curr_date)
 
     tips = "===============================\n" \
-           "ç¨‹åºè¿è¡Œå‰è¯·å…ˆå¯¹base_config.iniè¿›è¡Œé…ç½®ï¼š\n" \
+           "³ÌĞòÔËĞĞÇ°ÇëÏÈ¶Ôbase_config.ini½øĞĞÅäÖÃ£º\n" \
            "https://github.com/xiaodeme    \n" \
-           "è¿è¡Œæ—¥å¿—è¯·æŸ¥çœ‹ logs/data_collection.log    \n" \
+           "ÔËĞĞÈÕÖ¾Çë²é¿´ logs/data_collection.log    \n" \
            "==============================="
     print tips
-
+    #
     os.system("python ./init.py")
     os.system("python ./data_list_collection.py")
     os.system("python ./data_process.py")
@@ -35,11 +36,11 @@ if __name__ == "__main__":
 
     config_dict = config.get_config(root_path, data_type, curr_date)
     tips = "===============================\n" \
-           "æ•°æ®é‡‡é›†å­˜å‚¨æ ¹è·¯å¾„:%s \n" \
-           "æ•°æ®é‡‡é›†åˆ—è¡¨ä¿¡æ¯è·¯å¾„ï¼š%s \n" \
-           "æ•°æ®é‡‡é›†è¯¦ç»†ä¿¡æ¯è·¯å¾„ï¼š%s \n" \
-           "å½“å¤©æ–°å¢æ•°æ®è¯¦ç»†ä¿¡æ¯è·¯å¾„ï¼š%s \n" \
-           "å½“å¤©å‡å°‘æ•°æ®è¯¦ç»†ä¿¡æ¯è·¯å¾„ï¼š%s \n" \
+           "Êı¾İ²É¼¯´æ´¢¸ùÂ·¾¶:%s \n" \
+           "Êı¾İ²É¼¯ÁĞ±íĞÅÏ¢Â·¾¶£º%s \n" \
+           "Êı¾İ²É¼¯ÏêÏ¸ĞÅÏ¢Â·¾¶£º%s \n" \
+           "µ±ÌìĞÂÔöÊı¾İÏêÏ¸ĞÅÏ¢Â·¾¶£º%s \n" \
+           "µ±Ìì¼õÉÙÊı¾İÏêÏ¸ĞÅÏ¢Â·¾¶£º%s \n" \
            "==============================="
     print(tips % (root_path
                   , config_dict["data_list_folder_name"]

@@ -1,10 +1,10 @@
-#coding=utf-8
+#coding=gbk
 import logging
 import comm_utils
 def log_config(log_filename):
     '''
-    æ—¥å¿—é…ç½®ï¼š
-    å¯ä»¥å®ç°åŒæ—¶è¾“å‡ºä¿¡æ¯åˆ°æ§åˆ¶å°å’Œlogæ–‡ä»¶ä¸­
+    ÈÕÖ¾ÅäÖÃ£º
+    ¿ÉÒÔÊµÏÖÍ¬Ê±Êä³öĞÅÏ¢µ½¿ØÖÆÌ¨ºÍlogÎÄ¼şÖĞ
     :param root_path:
     :param data_type:
     :param log_name:
@@ -15,9 +15,9 @@ def log_config(log_filename):
         format='%(asctime)s - %(levelname)s - %(message)s',
         filename=log_filename);
 
-    #windowsè°ƒè¯•å¯ç”¨ï¼Œlinuxæ‰“å¼€ä¸ä¼šè¾“å‡ºåˆ°æ—¥å¿—æ–‡ä»¶
+    #windowsµ÷ÊÔ¿ÉÓÃ£¬linux´ò¿ª²»»áÊä³öµ½ÈÕÖ¾ÎÄ¼ş
     if comm_utils.is_windows():
-        #ä¸‹æ–¹ä»£ç å¯ä»¥åœ¨æœ¬åœ°æµ‹è¯•ï¼Œå¯åŒæ—¶è¾“å‡ºåˆ°æ§åˆ¶å°
+        #ÏÂ·½´úÂë¿ÉÒÔÔÚ±¾µØ²âÊÔ£¬¿ÉÍ¬Ê±Êä³öµ½¿ØÖÆÌ¨
         # define a Handler which writes INFO messages or higher to the sys.stderr
         console = logging.StreamHandler();
         console.setLevel(logging.DEBUG);
@@ -33,8 +33,8 @@ if __name__ == "__main__":
     LOG_NAME = "data_collection.log"
     log_config("F:/data/" + LOG_NAME)
 
-    logging.debug('è¿™ä¸ªæ¶ˆæ¯åº”è¯¥åˆ°æ—¥å¿—æ–‡ä»¶å’Œæ§åˆ¶å°')
-    logging.info('è¿™åº”è¯¥è¿™æ ·')
-    logging.warning('and thisï¼Œtoo')
+    logging.debug('Õâ¸öÏûÏ¢Ó¦¸Ãµ½ÈÕÖ¾ÎÄ¼şºÍ¿ØÖÆÌ¨')
+    logging.info('ÕâÓ¦¸ÃÕâÑù')
+    logging.warning('and this£¬too')
 
     # stream
