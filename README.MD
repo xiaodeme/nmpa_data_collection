@@ -81,5 +81,32 @@ root_path
 - 在/data_info/reduce 用于当前数据减少标识
 - 在/data_info/save 用于当前数据新增采集注册产信息
 
-### 四、其他说明
+
+### 四、新增定时脚本
+
+- 示例：添加一个每天凌晨3点执行的python脚步
+> setp 1 新增一个task.sh文件
+```
+#!/bin/bash
+cd 你下载路径/nmpa_data_collection/data_collection/
+python run_all.py
+```
+> setp 2 新增定时任务
+```
+crontab –e
+```
+在打开文件新增如下内容:
+
+```
+00 03 * * * sh  你下载路径/nmpa_data_collection/data_collection/task.sh
+```
+
+> setp 3 查看定时任务
+
+```
+crontab –l
+```
+
+
+### 五、其他说明
 - 以上数据可以进一步入库分析
