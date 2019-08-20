@@ -68,20 +68,30 @@ def save_data_list_to_disk(config_dict):
 
 
 def check_data(config_dict):
+
     data_list_folder_name = config_dict["data_list_folder_name"]
     data_type = config_dict["data_type"]
 
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_data_info_id(file_list)
     qsize = id_list.qsize()
-    logging.info("data_list数据已采集总量=:%s" % (qsize))
-    total_count = comm_utils.get_curr_nmpa_total_count(data_type)
-    logging.info("当前NMPA官网数据总量=:%s" % (total_count))
+    logging.info("查询[data_list]文件夹中数据已采集总量=:%s" % (qsize))
+    try:
+        # comm_utils.access_data_utils.get_test_timeout()
 
-    if qsize == total_count:
+        total_count = comm_utils.get_curr_nmpa_total_count(data_type)
+        logging.info("查询当前NMPA官网数据总量=:%s" % (total_count))
+        if qsize == total_count:
+            return True
+        else:
+            return False
         return True
-    else:
-        return False
+    except BaseException ,e :
+        logging.error("查询当前NMPA官网数据总量查询失败!")
+        logging.error("查询当前NMPA官网数据超时>>>>%s" % (e.args))
+        raise e
+
+
 
 
 
@@ -90,12 +100,17 @@ def data_collection(config_dict):
     :param config_dict: 程序运行基础配置信息
     :return:
     """
-    #数据检查
-    if check_data(config_dict):
-       logging.info("data_list数据集已经完成采集!")
-    else:
-        #数据采集
-        save_data_list_to_disk(config_dict)
+    try:
+        #数据检查
+        result  = check_data(config_dict)
+        if result:
+            logging.info("统计[data_list]数据总量与[当前NMPA官网数据总量]相等，数据集已经完成采集!")
+        else:
+            #开始数据采集
+            save_data_list_to_disk(config_dict)
+        return 1
+    except BaseException, e:
+        return 0
 
 
 #程序运行前生成的基础配置信息
@@ -136,6 +151,8 @@ if __name__ == "__main__":
 
     #2.初始化日志
     log_utils.log_config(curr_root_path + log_name)
+
+    logging.info("当前执行文件:%s" %( os.path.basename(__file__) ))
 
     #3.开始采集
     data_collection(config_dict)

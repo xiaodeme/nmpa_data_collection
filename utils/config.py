@@ -42,13 +42,14 @@ def init_config(root_path,data_type,get_type):
     curr_root_path = get_curr_root_path(root_path, data_type,curr_date)
 
     #日志初始化配置
-    log_foloder_name =  curr_root_path  + "/logs/"
-    file_utils.mkdir_path(log_foloder_name)
-    log_utils.log_config(log_foloder_name + LOG_NAME)
+    # log_foloder_name =  curr_root_path  + "/logs/"
+    # file_utils.mkdir_path(log_foloder_name)
+    # log_utils.log_config(log_foloder_name + LOG_NAME)
 
     # 当前数据存储根路径(定时执行， 按日期存放)
     if os.path.exists(curr_root_path + CONFIG_FILENAME):
-        print("本次数据采集[程序运行基础配置信息:%s]:已经初始完成!" % (CONFIG_FILENAME))
+        # print("本次数据采集[程序运行基础配置信息:%s]:已经初始完成!" % (CONFIG_FILENAME))
+        logging.info("本次数据采集[程序运行基础配置信息:[%s]:已经初始化完成!" % (curr_root_path+CONFIG_FILENAME))
         return False
 
     # 初始数据存储路径

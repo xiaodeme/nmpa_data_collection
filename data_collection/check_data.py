@@ -7,7 +7,6 @@ sys.setdefaultencoding('utf-8')
 import ConfigParser
 import logging
 from utils import file_utils
-from db_manager import  dbManager
 from utils import config
 from utils import log_utils
 from utils import  comm_utils
@@ -27,9 +26,6 @@ def check_data(curr_date):
     root_path = cf.get("base_config", "root_path")
     config_dict = config.get_config(root_path, data_type, curr_date)
 
-    # 日志初始化配置
-    log_filename = config.get_curr_root_path(root_path, data_type, curr_date) + "/logs/" + LOG_NAME
-    log_utils.log_config(log_filename)
 
     # 3. 获取待新增的数据
     add_folder_name = config_dict["add_folder_name"]

@@ -23,6 +23,23 @@ from utils import config
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 
+
+class myThread(threading.Thread):  # 继承父类threading.Thread
+    def __init__(self, name,config_dict=dict):
+        threading.Thread.__init__(self)
+        self.name = name
+        self.config_dict = config_dict
+    def run(self):  # 把要执行的代码写到run函数里面 线程在创建后会直接运行run函数
+        msg1 = "====Starting " + self.name
+        logging.info(msg1)
+        get_data_info(self.name,self.config_dict)
+        msg2 = "====Exiting " + self.name
+        logging.info(msg2)
+
+    def stop(self):
+        self.__flag.set()       # 将线程从暂停状态恢复, 如何已经暂停的话
+        self.__running.clear()  # 设置为False
+
 def start(threadCount,config_dict):
     # 启动x个线程，建议小于10个
     threads = []
@@ -83,21 +100,7 @@ def get_data_info(thread_name,config_dict):
             logging.error("UnboundLocalError")
             logging.error(e.message)
 
-class myThread(threading.Thread):  # 继承父类threading.Thread
-    def __init__(self, name,config_dict=dict):
-        threading.Thread.__init__(self)
-        self.name = name
-        self.config_dict = config_dict
-    def run(self):  # 把要执行的代码写到run函数里面 线程在创建后会直接运行run函数
-        msg1 = "====Starting " + self.name
-        logging.info(msg1)
-        get_data_info(self.name,self.config_dict)
-        msg2 = "====Exiting " + self.name
-        logging.info(msg2)
 
-    def stop(self):
-        self.__flag.set()       # 将线程从暂停状态恢复, 如何已经暂停的话
-        self.__running.clear()  # 设置为False
 
 
 
@@ -123,6 +126,8 @@ if __name__ == "__main__":
 
     # 2.初始化日志
     log_utils.log_config(curr_root_path + log_name)
+
+    logging.info("当前执行文件:%s" % (os.path.basename(__file__)))
 
 
     #3. 获取待新增的数据

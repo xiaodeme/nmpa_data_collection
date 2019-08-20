@@ -9,7 +9,6 @@ import ConfigParser
 cf = ConfigParser.ConfigParser()
 cf.read("../etc/base_config.cfg")
 if __name__ == "__main__":
-
     # 运行程序基础参数
     config_filename = cf.get("default_config", "config_filename")
     log_name = cf.get("default_config", "log_name")
