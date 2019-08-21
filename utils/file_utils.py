@@ -100,8 +100,8 @@ def get_curr_max_pageno(file_dir):
 def get_curr_date():
     return time.strftime("%Y%m%d", time.localtime())
 
-def get_last_date():
-    return (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime("%Y%m%d")
+def get_last_date(last_date_num):
+    return (datetime.datetime.now() + datetime.timedelta(days=-last_date_num)).strftime("%Y%m%d")
 
 
 

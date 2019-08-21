@@ -37,12 +37,36 @@ def data_process(config_dict):
 
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
-    last_data_list_folder_name  = config.get_last_root_path(root_path,data_type)
 
+
+    last_date_num = 1
+    last_date = file_utils.get_last_date(last_date_num)
+    last_data_list_folder_name  = config.get_last_root_path(root_path,data_type,last_date)
     file_list = file_utils.get_file_list(last_data_list_folder_name +  "/data_list/")
     id_list = file_utils.get_data_info_id(file_list)
     curr_data_id_list =  list(id_list.queue)
-    logging.info("数据分析:上一天[%s]数据采集数量: %s" %  (file_utils.get_last_date(),len(curr_data_id_list)))
+    curr_data_id_list_len = len(curr_data_id_list)
+    while curr_data_id_list_len == 0:
+        logging.warn("数据分析:[%s]数据采集数量: %s" % (last_date, curr_data_id_list_len))
+
+        last_date_num +=1
+        last_date = file_utils.get_last_date(last_date_num)
+
+        last_data_list_folder_name = config.get_last_root_path(root_path, data_type, last_date)
+        file_list = file_utils.get_file_list(last_data_list_folder_name + "/data_list/")
+        id_list = file_utils.get_data_info_id(file_list)
+        curr_data_id_list = list(id_list.queue)
+        curr_data_id_list_len = len(curr_data_id_list)
+
+
+    logging.info("数据分析:[%s]数据采集数量: %s" % (last_date, curr_data_id_list_len))
+
+
+
+
+
+
+
 
     file_list = file_utils.get_file_list(data_list_folder_name)
     id_list = file_utils.get_data_info_id(file_list)

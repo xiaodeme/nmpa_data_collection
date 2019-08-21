@@ -86,14 +86,13 @@ def init_config(root_path,data_type,get_type):
     logging.info("程序运行基础配置信息初始化完成:%s" % (config_filename))
     logging.debug(str(config_dict))
 
-def get_last_root_path(root_path,data_type):
+def get_last_root_path(root_path,data_type,last_date):
     """
     获取当前执行根路径: 当前路径 = 配置根路径 + 当前数据类型(data_type)  + 当前日期
     :param root_path:配置根路径
     :param data_type:数据类型
     :return:
     """
-    last_date = file_utils.get_last_date()
     last_root_path = root_path + "/" + str(data_type) + "/" + last_date + "/"
     return last_root_path
 

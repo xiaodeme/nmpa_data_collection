@@ -57,13 +57,20 @@ if __name__ == "__main__":
     run_result = data_list_collection.data_collection(config_dict)
     if run_result < 1:
         logging.error("[1]执行不成功，终止程序运行:%s" % (run_result))
+
+        #清空当天文件夹
+        data_list_folder_name = config_dict["data_list_folder_name"]
+        if file_utils.clear_folder(data_list_folder_name):
+            logging.info("清空文件夹文件:%s" % (data_list_folder_name))
+
+        logging.error("今天[%s]数据采集不成功,请重新运行采集程序!" %(curr_date))
         sys.exit(0)
 
     #3.数据分析
     data_process.data_process(config_dict)
 
 
-    # #4.新增数据采集
+    #4.新增数据采集
     run_result = data_collection_get_new_data.get_new_data(config_dict)
     if run_result < 1:
         logging.error("[2]执行不成功，终止程序运行:%s" % (run_result))
