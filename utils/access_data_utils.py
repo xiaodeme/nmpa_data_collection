@@ -1,19 +1,21 @@
 #coding=utf-8
 import urllib2
-import socket
-class MyException(Exception):
-    pass
+import ConfigParser
+
+
+# 读取配置文件
+cf = ConfigParser.ConfigParser()
+cf.read("../etc/base_config.cfg")
+
 
 
 '''
 抓取数据方法
 '''
 def get_data(url):
-    # html = urllib2.urlopen(url).read()
-    # return html
-
     try:
-        f = urllib2.urlopen(url, timeout=2)
+        timeout = int(cf.get("default_config", "timeout"))
+        f = urllib2.urlopen(url, timeout=timeout)
         return f.read()
     except urllib2.URLError, e:
         raise e
