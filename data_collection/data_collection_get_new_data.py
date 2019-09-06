@@ -65,7 +65,7 @@ def get_data_info(NEW_DATA_LIST,config_dict):
             info = save_filename + "写入成功! id: " + str(data_id)
             logging.debug(info)
 
-            # 休眠1秒，防止服务器判断为攻击
+            # 休眠2秒，防止服务器判断为攻击
             time.sleep(2)
         except urllib2.URLError as e:
             logging.error("获取新增数据采集失败! %s" %(e.args))
@@ -85,14 +85,15 @@ def get_new_data(config_dict):
     add_filename = add_folder_name + "add_data.json"
     NEW_DATA_LIST = file_utils.get_add_data_id(add_filename)
     add_data_count = NEW_DATA_LIST.qsize()
-    logging.info("[data_info]采集日期=%s,计划新增数据采集数据总量=:%s" % (curr_date, add_data_count))
+    # logging.info("[data_info]采集日期=%s,计划新增数据采集数据总量=:%s" % (curr_date, add_data_count))
 
     # data_info > save 数据采集总量检查
     data_info_save_folder_name = config_dict["data_info_save_folder_name"]
     file_list = file_utils.get_file_list(data_info_save_folder_name)
     data_info_count = file_utils.data_info_count(file_list)
-    logging.info("[data_info]采集日期=%s,实际新增数据采集数据总量=:%s" % (curr_date, data_info_count))
+    # logging.info("[data_info]采集日期=%s,实际新增数据采集数据总量=:%s" % (curr_date, data_info_count))
 
+    #数据采集前判断是否已经采集完成
     if add_data_count == data_info_count:
         logging.info("采集日期=%s,新增数据采集已经完成!" % (curr_date))
         return 1

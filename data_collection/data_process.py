@@ -38,7 +38,9 @@ def data_process(config_dict):
     data_type = cf.get("base_config", "data_type")
     root_path = cf.get("base_config", "root_path")
 
-
+    """
+    获取上一天数据总量(上一天可能采集失败，继续循环获取上一天，直到获取数据)
+    """
     last_date_num = 1
     last_date = file_utils.get_last_date(last_date_num)
     last_data_list_folder_name  = config.get_last_root_path(root_path,data_type,last_date)

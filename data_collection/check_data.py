@@ -40,6 +40,12 @@ def check_data(curr_date):
     data_info_count = file_utils.data_info_count(file_list)
     logging.info("[data_info]采集日期=%s,实际新增数据采集数据总量=:%s" % (curr_date, data_info_count))
 
+    if add_data_count == data_info_count :
+        logging.info("[data_info]采集日期=%s,数据采集完成!" % (curr_date))
+
+
+
+
 if __name__ == "__main__":
     """
         用于查看统计当前数据新增采集情况
