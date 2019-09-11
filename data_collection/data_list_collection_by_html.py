@@ -44,15 +44,21 @@ def save_data_list_to_disk2(page_index):
 
 
     if comm_utils.is_windows():
-        browser = webdriver.Chrome()
+        option = webdriver.ChromeOptions()
+        option.add_argument('--no-sandbox')
+        option.add_argument('--headless')
+        browser = webdriver.Chrome(chrome_options=option)
+
         browser.get(data_list_url)
         data_list_data = browser.page_source
+        browser.quit()
     else:
         option = webdriver.ChromeOptions()
         option.add_argument('--no-sandbox')
         option.add_argument('--headless')
-
         browser = webdriver.Chrome(chrome_options=option)
+
+
         browser.get(data_list_url)
         data_list_data = browser.page_source
         browser.quit()
@@ -113,6 +119,7 @@ if __name__ == "__main__":
     logging.info("当前共计:%s页" % (total_page_count))
 
     total_page_count = int(total_page_count) + 1
+    total_page_count = 5
     for index in range(1,total_page_count):
         page_size_list.append(index)
     # print page_size_list

@@ -16,18 +16,20 @@ import Queue
 import threading
 import ConfigParser
 import traceback
+cf = ConfigParser.ConfigParser()
+cf.read("../../etc/base_config.cfg")
 
 # 初始化队列，用于保存待抓取页码值
 temp_queue = Queue.Queue()
 
 #获取配置信息
-dataTypeConfig = etc_utils.DataTypeConfig(26,"../etc/example2_get_type.cfg")
-data_list_url = dataTypeConfig.get_data_list_url()
-data_type =  int(dataTypeConfig.get_data_type())
-total_count = int(dataTypeConfig.get_total_count())
-total_page_count = int(dataTypeConfig.get_total_page_count())
-save_root_path =   dataTypeConfig.get_save_root_path()
-thread_count =     int(dataTypeConfig.get_thread_count())
+
+data_list_url = cf.get("example","data_list_url")
+data_type =  int(cf.get("example","data_type"))
+total_count = int(cf.get("example","total_count"))
+total_page_count = int(cf.get("example","total_page_count"))
+save_root_path =   cf.get("example","save_root_path")
+thread_count =    int(cf.get("example","thread_count"))
 
 #数据保存路径
 DATA_LIST_PATH = save_root_path +  "/data_list/"
@@ -42,9 +44,7 @@ file_utils.mkdir_path(LOG_PATH)
 '''
 def init_data():
 
-    # 日志配置
-    log_name = LOG_PATH + "/get_data_list.log"
-    file_utils.logConfig(log_name)
+
 
     #数据获取总量初始化
     #用于程序中断后重新启动，其初始页码应该等于当前已经获取最大页码数+1
@@ -70,31 +70,27 @@ def get_data_list(threadName):
                 logging.info(info)
                 print(info)
 
+
+                data_list_url = data_list_url.format(26,curstart)
                 option = webdriver.ChromeOptions()
-                option.add_argument("headless")
-                browser = webdriver.Chrome(chrome_options=option)
-                url = data_list_url
-                url = url.format(26,curstart)
+                option.add_argument('--no-sandbox')
+                option.add_argument('--headless')
+                driver = webdriver.Chrome(chrome_options=option)
+                driver.get(data_list_url)
+                data = driver.page_source
 
-                print(url)
-                logging.info(url)
 
-                browser.get(url)  # Load page
-                # time.sleep(1)     #休眠1秒，主要防止目标服务器判为攻击，不知是否有效
 
-                #获得网页数据
-                data = browser.page_source
                 file_name = DATA_LIST_PATH  +"/"+ str(curstart) + ".html"
                 if file_utils.write_file(file_name,data):
                     info = file_name + "写入文件成功"
                     logging.info(info)
                     print(info)
 
-                # browser.close()
-                browser.quit()
+
         except BaseException as e:
             traceback.print_exc()  #直接打印异常
-            logging.error(traceback.format_exc()) #返回字符串 写入到文件
+
 
 
 
@@ -166,4 +162,5 @@ if __name__ == "__main__":
     '''
     #2、开始获取数据
     '''
+    print(thread_count)
     start(thread_count)
