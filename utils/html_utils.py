@@ -55,8 +55,8 @@ def get_info(text):
 
     # print("当前数据总量:%s,共有:%s页" % (total_count,total_page_count))
 
-    print total_count
-    print total_page_count
+    # print total_count
+    # print total_page_count
     return total_page_count,total_count
 
 

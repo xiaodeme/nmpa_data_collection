@@ -118,15 +118,17 @@ if __name__ == "__main__":
     total_page_count, total_count  = html_utils.get_curr_nmpa_total_count(data_type)
     logging.info("当前共计:%s页" % (total_page_count))
 
-    total_page_count = int(total_page_count) + 1
-    total_page_count = 5
-    for index in range(1,total_page_count):
+    total_page_count = int(total_page_count)
+    total_page_count = 5  #测试用
+    for index in range(1,total_page_count + 1):
         page_size_list.append(index)
     # print page_size_list
 
     begin_time = time.time()
     logging.info("数据采集开始时间:%s" % (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-    pool = threadpool.ThreadPool(10)
+
+    thread_max_size = 5   #线程最大数量
+    pool = threadpool.ThreadPool(thread_max_size)
     requests = threadpool.makeRequests(save_data_list_to_disk2,page_size_list)
     [pool.putRequest(req) for req in requests]
     pool.wait()

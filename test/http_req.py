@@ -9,7 +9,7 @@
 import urllib2
 import random
 
-url = "http://mobile.cfda.gov.cn/datasearch/QueryList?pageIndex=1&pageSize=10&tableId=26"
+url = "http://appcfda.drugwebcn.com/datasearch/QueryList?tableId=26&pageIndex=1&pageSize=15"
 
 my_headers = [
     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
@@ -30,7 +30,7 @@ def get_content(url, headers):
     req = urllib2.Request(url)
     req.add_header("User-Agent", randdom_header)
     req.add_header("Host", "mobile.cfda.gov.cn")
-    req.add_header("Referer", "http://mobile.cfda.gov.cn/datasearch/QueryList?pageIndex=1&pageSize=1&tableId=26")
+    req.add_header("Referer", "http://appcfda.drugwebcn.com/datasearch/QueryList?tableId=26&pageIndex=1&pageSize=15")
     req.add_header("GET", url)
 
     content = urllib2.urlopen(req).read()
